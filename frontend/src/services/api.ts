@@ -54,7 +54,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (!originalRequest || error.response?.status !== 401 || originalRequest._retry || originalRequest.url?.includes('/auth/refresh')) {
+    const isAuthEndpoint = originalRequest?.url?.includes('/auth/login') ||
+                           originalRequest?.url?.includes('/auth/register') ||
+                           originalRequest?.url?.includes('/auth/refresh') ||
+                           originalRequest?.url?.includes('/auth/forgot-password');
+
+    if (!originalRequest || error.response?.status !== 401 || originalRequest._retry || isAuthEndpoint) {
       return Promise.reject(error);
     }
 
@@ -80,7 +85,9 @@ api.interceptors.response.use(
         localStorage.removeItem('gsem_access_token');
         localStorage.removeItem('gsem_refresh_token');
         localStorage.removeItem('gsem_user');
-        window.location.href = '/login';
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login' && window.location.pathname !== '/') {
+          window.location.href = '/login';
+        }
         return Promise.reject(error);
       }
 
@@ -101,7 +108,9 @@ api.interceptors.response.use(
         localStorage.removeItem('gsem_access_token');
         localStorage.removeItem('gsem_refresh_token');
         localStorage.removeItem('gsem_user');
-        window.location.href = '/login';
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login' && window.location.pathname !== '/') {
+          window.location.href = '/login';
+        }
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

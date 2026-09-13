@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
-import { Eye, EyeOff, Shield, Vote } from 'lucide-react';
+import { Eye, EyeOff, Shield, Vote, AlertCircle } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../store/authSlice';
 import { authApi } from '../services/api';
@@ -25,6 +25,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,21 +35,33 @@ export default function LoginPage() {
 
   const onSubmit = async (data: LoginForm) => {
     setIsLoading(true);
+    setErrorMessage(null);
     try {
-      const identifier = data.email || data.phone || '';
+      const identifier = (data.email || data.phone || '').trim();
       const payload = identifier.includes('@') ? { email: identifier, password: data.password } : { phone: identifier, password: data.password };
       const response = await authApi.login(payload);
       if (response.data.success) {
         dispatch(setCredentials(response.data.data));
         toast.success('Welcome back!');
         navigate('/app/dashboard');
+      } else {
+        const msg = response.data.message || 'Login failed';
+        setErrorMessage(msg);
+        toast.error(msg);
       }
     } catch (error: unknown) {
-      const err = error as { response?: { data?: { message?: string } } };
-      toast.error(err.response?.data?.message || 'Login failed');
+      console.error('Login error:', error);
+      const err = error as { response?: { data?: { message?: string } }; message?: string };
+      const msg = err.response?.data?.message || err.message || 'Invalid email/phone or password. Please verify your credentials.';
+      setErrorMessage(msg);
+      toast.error(msg);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const onValidationError = () => {
+    setErrorMessage('Please enter your email/phone and your password (minimum 8 characters).');
   };
 
   return (
@@ -87,14 +100,25 @@ export default function LoginPage() {
         <div className="surface-elevated p-8 sm:p-9">
           <h2 className="font-display text-xl font-semibold text-text-primary mb-6">Sign In</h2>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+          {/* Prominent Error Banner */}
+          {errorMessage && (
+            <div className="mb-5 p-3.5 bg-red-50 border border-red-200 text-red-700 rounded-xl text-sm flex items-start gap-2.5 animate-fade-in">
+              <AlertCircle className="w-5 h-5 flex-shrink-0 text-red-500 mt-0.5" />
+              <div className="flex-1">
+                <p className="font-semibold text-red-800 text-xs uppercase tracking-wider">Authentication Error</p>
+                <p className="text-xs text-red-700 mt-0.5">{errorMessage}</p>
+              </div>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit(onSubmit, onValidationError)} className="space-y-5">
             <div>
               <label className="label-text">Email or phone number</label>
               <input
                 {...register('email')}
                 type="text"
                 className="input-field"
-                placeholder="admin@gsem.ng or +234 800 000 0000"
+                placeholder="admin@jisems.ng or +234 800 000 0000"
                 autoComplete="username"
               />
               {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}

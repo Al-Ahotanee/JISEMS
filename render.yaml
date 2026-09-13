@@ -5,7 +5,7 @@ services:
     plan: free
     region: frankfurt
     buildCommand: npm install --include=dev && npm run build
-    startCommand: npm run migrate && npm start
+    startCommand: npm run setup && npm start
     healthCheckPath: /health
     autoDeployTrigger: commit
     envVars:
