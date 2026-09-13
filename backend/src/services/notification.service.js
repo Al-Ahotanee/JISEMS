@@ -20,7 +20,7 @@ class NotificationService {
       ? {
           apiKey: process.env.AT_API_KEY,
           username: process.env.AT_USERNAME,
-          senderId: process.env.AT_SENDER_ID || 'GSEM'
+          senderId: process.env.AT_SENDER_ID || 'JISEMS'
         }
       : null;
 
@@ -29,7 +29,7 @@ class NotificationService {
       try {
         const webPush = require('web-push');
         webPush.setVapidDetails(
-          process.env.VAPID_SUBJECT || 'mailto:admin@gsem.ng',
+          process.env.VAPID_SUBJECT || 'mailto:admin@jisems.ng',
           process.env.VAPID_PUBLIC_KEY,
           process.env.VAPID_PRIVATE_KEY
         );
@@ -77,9 +77,9 @@ class NotificationService {
     }
     try {
       await this.emailTransporter.sendMail({
-        from: process.env.SMTP_FROM || 'noreply@gsem.ng',
+        from: process.env.SMTP_FROM || 'noreply@jisems.ng',
         to,
-        subject: `[GSEM] ${subject}`,
+        subject: `[JISEMS] ${subject}`,
         html
       });
       logger.info(`Email sent to ${to}: ${subject}`);
@@ -99,7 +99,7 @@ class NotificationService {
       const body = new URLSearchParams({
         username: this.smsConfig.username,
         to: phone,
-        message: `GSEM: ${message}`,
+        message: `JISEMS: ${message}`,
         from: this.smsConfig.senderId
       });
       const response = await fetch('https://api.africastalking.com/version1/messaging', {

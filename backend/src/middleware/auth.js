@@ -3,7 +3,7 @@ const { pool } = require('../config/database');
 const ApiResponse = require('../utils/response');
 const logger = require('../utils/logger');
 
-const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-secret');
+const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'jisems-development-only-secret');
 if (!JWT_SECRET) throw new Error('JWT_SECRET is required in production');
 
 // Verify JWT token
@@ -15,7 +15,7 @@ const authenticate = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, JWT_SECRET, { issuer: 'gsem-api' });
+    const decoded = jwt.verify(token, JWT_SECRET, { issuer: ['jisems-api', 'gsem-api'] });
 
     // Get user from DB
     const [users] = await pool.query(
@@ -58,7 +58,7 @@ const optionalAuth = async (req, res, next) => {
     }
 
     const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, JWT_SECRET, { issuer: 'gsem-api' });
+    const decoded = jwt.verify(token, JWT_SECRET, { issuer: ['jisems-api', 'gsem-api'] });
 
     const [users] = await pool.query(
       'SELECT id, email, phone, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, photo_url, token_version FROM users WHERE id = ?',

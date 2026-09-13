@@ -23,7 +23,7 @@ const exportMyData = async (req, res) => {
     };
 
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Content-Disposition', `attachment; filename=gsem-mydata-${userId}-${Date.now()}.json`);
+    res.setHeader('Content-Disposition', `attachment; filename=jisems-mydata-${userId}-${Date.now()}.json`);
     return res.json(data);
   } catch (error) {
     logger.error('Export data error:', error);

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const logger = require('../utils/logger');
 const { pool } = require('../config/database');
 
-const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-secret');
+const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'jisems-development-only-secret');
 
 function normalizeId(value) {
   const id = Number(value);
@@ -24,7 +24,7 @@ function sendRoomSuccess(socket, event, room, ack) {
 async function loadSocketUser(token) {
   if (!JWT_SECRET) throw new Error('Socket authentication is unavailable');
 
-  const decoded = jwt.verify(token, JWT_SECRET, { issuer: 'gsem-api' });
+  const decoded = jwt.verify(token, JWT_SECRET, { issuer: ['jisems-api', 'gsem-api'] });
   if (!decoded?.id) throw new Error('Invalid access token');
 
   const [users] = await pool.query(

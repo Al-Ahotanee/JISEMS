@@ -313,19 +313,19 @@ export default function SituationRoomPage() {
     let filename = '';
 
     if (currentViewData.level === 'ward' && wardDetail) {
-      filename = `GSEM_PU_Results_${wardDetail.ward.name.replace(/\s+/g, '_')}_${Date.now()}.csv`;
+      filename = `JISEMS_PU_Results_${wardDetail.ward.name.replace(/\s+/g, '_')}_${Date.now()}.csv`;
       headers = 'INEC PU Code,Polling Unit Name,Registered Voters,Accredited Voters,Votes Cast,Valid Votes,Rejected,Turnout %,Status,Leading Party,Submitted At\n';
       rows = (wardDetail.polling_units || []).map((pu: SituationRoomPUDetail) =>
         `"${pu.inec_pu_code}","${pu.name}",${pu.registered_voters},${pu.accredited_voters ?? ''},${pu.total_votes_cast ?? ''},${pu.total_valid_votes ?? ''},${pu.rejected_votes ?? ''},"${pu.turnout_percentage}%","${pu.status}","${pu.leading_party}","${pu.submitted_at || ''}"`
       );
     } else if (currentViewData.level === 'lga' && lgaDetail) {
-      filename = `GSEM_Ward_Results_${lgaDetail.lga.name.replace(/\s+/g, '_')}_${Date.now()}.csv`;
+      filename = `JISEMS_Ward_Results_${lgaDetail.lga.name.replace(/\s+/g, '_')}_${Date.now()}.csv`;
       headers = 'Ward Name,Ward Code,Total PUs,Reported PUs,Verified PUs,Registered Voters,Accredited Voters,Votes Cast,Valid Votes,Rejected,Turnout %,Reporting %,Leading Party\n';
       rows = (lgaDetail.wards || []).map((w: WardDashboardSummary) =>
         `"${w.ward_name}","${w.ward_code || ''}",${w.total_polling_units},${w.reported_polling_units},${w.verified_polling_units || 0},${w.total_registered_voters || 0},${w.total_accredited_voters || 0},${w.total_votes_cast || 0},${w.total_valid_votes || 0},${w.rejected_votes || 0},"${w.turnout_percentage || 0}%","${w.reporting_percentage}%","${w.leading_party || 'N/A'}"`
       );
     } else {
-      filename = `GSEM_Statewide_LGAs_${Date.now()}.csv`;
+      filename = `JISEMS_Statewide_LGAs_${Date.now()}.csv`;
       headers = 'LGA Name,Total PUs,Reported PUs,Verified PUs,Registered Voters,Accredited Voters,Votes Cast,Valid Votes,Rejected,Turnout %,Reporting %,Leading Party\n';
       rows = (room?.lga_breakdown || []).map((l: LGADashboardSummary) =>
         `"${l.lga_name}",${l.total_polling_units},${l.reported_polling_units},${l.verified_polling_units || 0},${l.total_registered_voters || 0},${l.total_accredited_voters || 0},${l.total_votes_cast || 0},${l.total_valid_votes || 0},${l.rejected_votes || 0},"${l.turnout_percentage || 0}%","${l.reporting_percentage}%","${l.leading_party || 'N/A'}"`

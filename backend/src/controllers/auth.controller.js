@@ -6,8 +6,8 @@ const { pool, cache } = require('../config/database');
 const ApiResponse = require('../utils/response');
 const logger = require('../utils/logger');
 
-const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-secret');
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-refresh-secret');
+const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'jisems-development-only-secret');
+const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || (process.env.NODE_ENV === 'production' ? null : 'jisems-development-only-refresh-secret');
 if (!JWT_SECRET || !JWT_REFRESH_SECRET) throw new Error('JWT_SECRET and JWT_REFRESH_SECRET are required in production');
 const ACCESS_TOKEN_EXPIRY = '30m';
 const REFRESH_TOKEN_EXPIRY = '7d';
@@ -25,7 +25,7 @@ function generateAccessToken(user) {
       token_version: Number(user.token_version || 0)
     },
     JWT_SECRET,
-    { expiresIn: ACCESS_TOKEN_EXPIRY, issuer: 'gsem-api' }
+    { expiresIn: ACCESS_TOKEN_EXPIRY, issuer: 'jisems-api' }
   );
 }
 
@@ -34,7 +34,7 @@ function generateRefreshToken(user) {
   const token = jwt.sign(
     { id: user.id, jti },
     JWT_REFRESH_SECRET,
-    { expiresIn: REFRESH_TOKEN_EXPIRY, issuer: 'gsem-api' }
+    { expiresIn: REFRESH_TOKEN_EXPIRY, issuer: 'jisems-api' }
   );
   return { token, jti };
 }

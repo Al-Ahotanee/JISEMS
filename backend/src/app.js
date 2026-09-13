@@ -87,10 +87,10 @@ app.use('/api/v1', routes);
 app.get('/health', async (req, res) => {
   try {
     await checkDatabase();
-    return res.status(200).json({ status: 'ok', service: 'gsem-api', database: 'ok', timestamp: new Date().toISOString() });
+    return res.status(200).json({ status: 'ok', service: 'jisems-api', database: 'ok', timestamp: new Date().toISOString() });
   } catch (error) {
     logger.error('Health check failed', { error: error.message });
-    return res.status(503).json({ status: 'degraded', service: 'gsem-api', database: 'unavailable' });
+    return res.status(503).json({ status: 'degraded', service: 'jisems-api', database: 'unavailable' });
   }
 });
 

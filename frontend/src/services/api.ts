@@ -24,7 +24,7 @@ const api: AxiosInstance = axios.create({
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = localStorage.getItem('gsem_access_token');
+    const token = localStorage.getItem('jisems_access_token') || localStorage.getItem('gsem_access_token');
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -78,10 +78,13 @@ api.interceptors.response.use(
       originalRequest._retry = true;
       isRefreshing = true;
 
-      const refreshToken = localStorage.getItem('gsem_refresh_token');
+      const refreshToken = localStorage.getItem('jisems_refresh_token') || localStorage.getItem('gsem_refresh_token');
 
       if (!refreshToken) {
         isRefreshing = false;
+        localStorage.removeItem('jisems_access_token');
+        localStorage.removeItem('jisems_refresh_token');
+        localStorage.removeItem('jisems_user');
         localStorage.removeItem('gsem_access_token');
         localStorage.removeItem('gsem_refresh_token');
         localStorage.removeItem('gsem_user');
@@ -95,6 +98,8 @@ api.interceptors.response.use(
         const response = await axios.post('/api/v1/auth/refresh', { refreshToken });
         const { accessToken, refreshToken: newRefreshToken } = response.data.data;
 
+        localStorage.setItem('jisems_access_token', accessToken);
+        localStorage.setItem('jisems_refresh_token', newRefreshToken);
         localStorage.setItem('gsem_access_token', accessToken);
         localStorage.setItem('gsem_refresh_token', newRefreshToken);
 
@@ -105,6 +110,9 @@ api.interceptors.response.use(
         return api(originalRequest);
       } catch (refreshError) {
         processQueue(refreshError, null);
+        localStorage.removeItem('jisems_access_token');
+        localStorage.removeItem('jisems_refresh_token');
+        localStorage.removeItem('jisems_user');
         localStorage.removeItem('gsem_access_token');
         localStorage.removeItem('gsem_refresh_token');
         localStorage.removeItem('gsem_user');

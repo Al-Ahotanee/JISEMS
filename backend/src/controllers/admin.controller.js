@@ -216,7 +216,7 @@ const reviewApplication = async (req, res) => {
             app.lga_id, app.ward_id, app.polling_unit_id, app.nin, app.password_hash, userId]
         );
       } else {
-        tempPassword = `GSEM${Date.now().toString(36)}!`;
+        tempPassword = `JISEMS${Date.now().toString(36)}!`;
         const hash = app.password_hash || await bcrypt.hash(tempPassword, 12);
         const [userResult] = await client.query(
           `INSERT INTO users
@@ -253,10 +253,10 @@ const reviewApplication = async (req, res) => {
     if (app.email) {
       if (status === 'approved') {
         notificationService.sendEmail(app.email, 'Application Approved',
-          `<h3>Welcome to GSEM!</h3><p>Your application has been approved.</p>${tempPassword ? `<p>Your temporary password is: <strong>${tempPassword}</strong></p><p>Please change it after login.</p>` : ''}`);
+          `<h3>Welcome to JISEMS!</h3><p>Your application has been approved.</p>${tempPassword ? `<p>Your temporary password is: <strong>${tempPassword}</strong></p><p>Please change it after login.</p>` : ''}`);
       } else {
         notificationService.sendEmail(app.email, 'Application Status Update',
-          `<p>Your GSEM application has been rejected.</p>${review_notes ? `<p>Notes: ${review_notes}</p>` : ''}`);
+          `<p>Your JISEMS application has been rejected.</p>${review_notes ? `<p>Notes: ${review_notes}</p>` : ''}`);
       }
     }
 

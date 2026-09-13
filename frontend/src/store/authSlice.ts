@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AuthState, User } from '../types';
 
-const storedToken = localStorage.getItem('gsem_access_token');
-const storedRefresh = localStorage.getItem('gsem_refresh_token');
-const storedUser = localStorage.getItem('gsem_user');
+const storedToken = localStorage.getItem('jisems_access_token') || localStorage.getItem('gsem_access_token');
+const storedRefresh = localStorage.getItem('jisems_refresh_token') || localStorage.getItem('gsem_refresh_token');
+const storedUser = localStorage.getItem('jisems_user') || localStorage.getItem('gsem_user');
 
 const initialState: AuthState = {
   user: storedUser ? JSON.parse(storedUser) : null,
@@ -23,6 +23,10 @@ const authSlice = createSlice({
       state.refreshToken = action.payload.refreshToken;
       state.isAuthenticated = true;
       state.isLoading = false;
+      localStorage.setItem('jisems_access_token', action.payload.accessToken);
+      localStorage.setItem('jisems_refresh_token', action.payload.refreshToken);
+      localStorage.setItem('jisems_user', JSON.stringify(action.payload.user));
+      // Keep gsem keys synced for backwards compatibility
       localStorage.setItem('gsem_access_token', action.payload.accessToken);
       localStorage.setItem('gsem_refresh_token', action.payload.refreshToken);
       localStorage.setItem('gsem_user', JSON.stringify(action.payload.user));
@@ -30,12 +34,16 @@ const authSlice = createSlice({
     updateUser: (state, action: PayloadAction<Partial<User>>) => {
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
-        localStorage.setItem('gsem_user', JSON.stringify(state.user));
+        const serialized = JSON.stringify(state.user);
+        localStorage.setItem('jisems_user', serialized);
+        localStorage.setItem('gsem_user', serialized);
       }
     },
     setTokens: (state, action: PayloadAction<{ accessToken: string; refreshToken: string }>) => {
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
+      localStorage.setItem('jisems_access_token', action.payload.accessToken);
+      localStorage.setItem('jisems_refresh_token', action.payload.refreshToken);
       localStorage.setItem('gsem_access_token', action.payload.accessToken);
       localStorage.setItem('gsem_refresh_token', action.payload.refreshToken);
     },
@@ -48,6 +56,9 @@ const authSlice = createSlice({
       state.refreshToken = null;
       state.isAuthenticated = false;
       state.isLoading = false;
+      localStorage.removeItem('jisems_access_token');
+      localStorage.removeItem('jisems_refresh_token');
+      localStorage.removeItem('jisems_user');
       localStorage.removeItem('gsem_access_token');
       localStorage.removeItem('gsem_refresh_token');
       localStorage.removeItem('gsem_user');

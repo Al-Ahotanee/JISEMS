@@ -31,12 +31,12 @@ export interface OfflineIncident {
   sync_error?: string;
 }
 
-export class GSEMOfflineDB extends Dexie {
+export class JISEMSOfflineDB extends Dexie {
   offlineResults!: Table<OfflineResult>;
   offlineIncidents!: Table<OfflineIncident>;
 
   constructor() {
-    super('gsem-offline');
+    super('jisems-offline');
     this.version(2).stores({
       offlineResults: '++id, election_id, polling_unit_id, synced, created_at',
       offlineIncidents: '++id, synced, created_at',
@@ -44,4 +44,5 @@ export class GSEMOfflineDB extends Dexie {
   }
 }
 
-export const offlineDb = new GSEMOfflineDB();
+export const offlineDb = new JISEMSOfflineDB();
+export const GSEMOfflineDB = JISEMSOfflineDB;

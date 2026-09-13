@@ -7,7 +7,7 @@ const logger = winston.createLogger({
     winston.format.errors({ stack: true }),
     winston.format.json(),
   ),
-  defaultMeta: { service: 'gsem-api' },
+  defaultMeta: { service: 'jisems-api' },
   transports: [
     new winston.transports.Console(),
   ],

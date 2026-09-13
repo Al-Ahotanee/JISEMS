@@ -5,7 +5,7 @@ const ApiResponse = require('../utils/response');
 const logger = require('../utils/logger');
 const { broadcastCollation } = require('../websocket/socket.handler');
 
-const HMAC_SECRET = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-hmac-secret');
+const HMAC_SECRET = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' ? null : 'jisems-development-only-hmac-secret');
 if (!HMAC_SECRET) throw new Error('HMAC_SECRET is required in production');
 
 async function submitWardCollation(req, res) {

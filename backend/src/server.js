@@ -36,7 +36,7 @@ setupSocketHandlers(io);
 
 function start() {
   return server.listen(port, host, () => {
-    logger.info('GSEM API server started', { port, host, environment: process.env.NODE_ENV || 'development' });
+    logger.info('JISEMS API server started', { port, host, environment: process.env.NODE_ENV || 'development' });
   });
 }
 

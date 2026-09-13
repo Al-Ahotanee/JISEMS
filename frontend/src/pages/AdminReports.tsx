@@ -33,7 +33,7 @@ export default function AdminReportsPage() {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `GSEM-Report-${Date.now()}.${type === 'excel' ? 'xlsx' : type}`;
+      a.download = `JISEMS-Report-${Date.now()}.${type === 'excel' ? 'xlsx' : type}`;
       document.body.appendChild(a);
       a.click();
       window.URL.revokeObjectURL(url);
@@ -49,7 +49,7 @@ export default function AdminReportsPage() {
   const reports = [
     {
       title: 'PDF Report',
-      description: 'Comprehensive election report with candidate standings, LGA breakdown, and summary statistics. Branded with GSEM identity.',
+      description: 'Comprehensive election report with candidate standings, LGA breakdown, and summary statistics. Branded with JISEMS identity.',
       icon: FileText,
       color: 'text-red-400',
       bgColor: 'bg-red-500/10',

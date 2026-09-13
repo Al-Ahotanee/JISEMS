@@ -6,7 +6,7 @@ const logger = require('../utils/logger');
 const { broadcastResultSubmission, broadcastResultVerified } = require('../websocket/socket.handler');
 const notificationService = require('../services/notification.service');
 
-const HMAC_SECRET = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-hmac-secret');
+const HMAC_SECRET = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' ? null : 'jisems-development-only-hmac-secret');
 if (!HMAC_SECRET) throw new Error('HMAC_SECRET is required in production');
 
 function generateContentHash(voteData) {
@@ -140,10 +140,10 @@ async function submitResult(req, res) {
       return ApiResponse.badRequest(res, 'One or more candidate IDs are invalid for this election');
     }
 
-    // Generate submission UID: GSEM-{year}-{lga_code}{ward_num}-{pu_num}
+    // Generate submission UID: JISEMS-{year}-{lga_code}{ward_num}-{pu_num}
     const year = elections[0].election_year || new Date().getFullYear();
     const puCode = pu.code || pu.delimiter_code || '000';
-    const submissionUid = `GSEM-${year}-${pu.lga_code}${pu.ward_code}-${puCode}`;
+    const submissionUid = `JISEMS-${year}-${pu.lga_code}${pu.ward_code}-${puCode}`;
 
     // Generate content hash and digital signature
     const voteDataForHash = {

@@ -38,8 +38,11 @@ export default function ResetPasswordPage() {
       <div className="absolute inset-0 atlas-grid" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, rgba(49,89,138,0.13) 1px, transparent 0)', backgroundSize: '40px 40px' }} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-md">
         <div className="text-center mb-8">
-          <Shield className="w-10 h-10 text-primary-700 mx-auto mb-2" />
-          <h1 className="font-display text-3xl font-semibold text-primary-800">GSEM</h1>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 via-emerald-700 to-primary-800 shadow-lg text-white mb-3 ring-4 ring-emerald-500/20">
+            <Shield className="w-8 h-8" />
+          </div>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-primary-800">JISEMS</h1>
+          <p className="text-xs font-semibold text-emerald-700 uppercase tracking-widest mt-1">Jigawa State Election Monitor</p>
         </div>
         <div className="surface-elevated p-8 sm:p-9">
           {completed ? (

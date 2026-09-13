@@ -110,11 +110,11 @@ export default function RegisterPage() {
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-lg">
         <div className="text-center mb-6">
-          <div className="flex items-center justify-center gap-3 mb-2">
-            <Shield className="w-8 h-8 text-primary-700" />
-            <h1 className="font-display text-3xl font-semibold text-primary-800">GSEM</h1>
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-600 via-emerald-700 to-primary-800 shadow-lg text-white mb-3 ring-4 ring-emerald-500/20">
+            <Shield className="w-8 h-8" />
           </div>
-          <p className="text-text-muted text-sm">Agent Registration</p>
+          <h1 className="font-display text-3xl font-bold tracking-tight text-primary-800">JISEMS</h1>
+          <p className="text-xs font-semibold text-emerald-700 uppercase tracking-widest mt-1">Jigawa State Election Monitor — Agent Registration</p>
         </div>
 
         <div className="surface-elevated p-8 sm:p-9">
@@ -127,7 +127,7 @@ export default function RegisterPage() {
               </div>
               <div>
                 <label className="label-text">Last Name</label>
-                <input {...register('last_name')} className="input-field" placeholder="Pantami" />
+                <input {...register('last_name')} className="input-field" placeholder="Garba" />
                 {errors.last_name && <p className="text-red-400 text-xs mt-1">{errors.last_name.message}</p>}
               </div>
             </div>
