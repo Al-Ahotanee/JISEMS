@@ -11,7 +11,7 @@ import {
   Shield, Vote, TrendingUp, MapPin, Users, Share2, Filter, Activity,
   CheckCircle, Clock, ArrowUpRight, BarChart2, PieChart as PieChartIcon,
   Download, Search, AlertCircle, FileText, ChevronRight, Check, Eye,
-  Landmark, Building2, Scale, X
+  Landmark, Building2, Scale, X, ChevronDown
 } from 'lucide-react';
 import CountUp from 'react-countup';
 import { MapContainer, TileLayer, CircleMarker, Tooltip as LeafletTooltip, useMap } from 'react-leaflet';
@@ -128,6 +128,26 @@ export default function SituationRoomPage() {
   const room = stateData?.data?.data;
   const lgaDetail = lgaData?.data?.data;
   const wardDetail = wardData?.data?.data;
+
+  const currentSelectedElection = useMemo(() => {
+    return (
+      room?.available_elections?.find((e: any) => e.id === (selectedElectionId || room?.election?.id)) ||
+      room?.election
+    );
+  }, [room, selectedElectionId]);
+
+  const { gubernatorialContests, senatorialContests, repsContests, assemblyContests, otherContests } = useMemo(() => {
+    const list = room?.available_elections || [];
+    return {
+      gubernatorialContests: list.filter((e: any) => e.election_type === 'gubernatorial'),
+      senatorialContests: list.filter((e: any) => e.election_type === 'senatorial'),
+      repsContests: list.filter((e: any) => e.election_type === 'house_of_representatives'),
+      assemblyContests: list.filter((e: any) => e.election_type === 'state_assembly'),
+      otherContests: list.filter(
+        (e: any) => !['gubernatorial', 'senatorial', 'house_of_representatives', 'state_assembly'].includes(e.election_type)
+      ),
+    };
+  }, [room?.available_elections]);
 
   const handleShare = () => {
     if (navigator.share) {
@@ -464,56 +484,118 @@ export default function SituationRoomPage() {
                 </div>
               </div>
 
-              {/* JISEMS Multi-Election Contest Switcher */}
+              {/* JISEMS Multi-Election Contest Dropdown Filter */}
               {room?.available_elections && room.available_elections.length > 0 && (
                 <div className="surface-elevated p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4 border border-dark-border shadow-sm">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-primary-50 border border-primary-200 flex items-center justify-center text-primary-700 shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0 shadow-sm">
                       <Vote className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="font-display text-base font-semibold text-text-primary">Electoral Contest</h3>
+                      <div className="flex items-center gap-2">
+                        <h3 className="font-display text-base font-semibold text-text-primary">Electoral Contest</h3>
+                        <span className="badge-jigawa text-[10px] px-2 py-0.5 font-mono">
+                          {room.available_elections.length} Active Contests
+                        </span>
+                      </div>
                       <p className="text-xs text-text-muted">Select an election contest to inspect live results & collation</p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
-                    {room.available_elections.map((elec: any) => {
-                      const isSelected = elec.id === (selectedElectionId || room?.election?.id);
-                      return (
-                        <button
-                          key={elec.id}
-                          onClick={() => {
-                            setSelectedElectionId(elec.id);
-                            setSelectedLgaId(null);
-                            setSelectedWardId(null);
-                            setSearchTerm('');
-                          }}
-                          className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border ${
-                            isSelected
-                              ? 'bg-primary-600 text-white border-primary-700 shadow-md shadow-primary-900/15'
-                              : 'bg-white hover:bg-primary-50 text-text-secondary border-dark-border hover:border-primary-300'
-                          }`}
-                        >
-                          <span className="inline-flex items-center gap-1.5">
-                            {elec.election_type === 'gubernatorial' ? (
-                              <><Vote className="w-3.5 h-3.5 text-emerald-500" /> Gubernatorial</>
-                            ) : elec.election_type === 'senatorial' ? (
-                              <><Landmark className="w-3.5 h-3.5 text-primary-300" /> Senate</>
-                            ) : elec.election_type === 'house_of_representatives' ? (
-                              <><Building2 className="w-3.5 h-3.5 text-amber-400" /> House of Reps</>
-                            ) : (
-                              <><Scale className="w-3.5 h-3.5 text-indigo-300" /> State Assembly</>
-                            )}
-                          </span>
-                          <span className={`text-[10px] px-2 py-0.5 rounded-md font-mono ${
-                            isSelected ? 'bg-white/20 text-white' : 'bg-dark-surface-2 text-text-muted'
-                          }`}>
-                            {elec.constituency_name || 'Statewide'}
-                          </span>
-                        </button>
-                      );
-                    })}
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full md:w-auto">
+                    {/* Active Contest Scope Tag */}
+                    {currentSelectedElection && (
+                      <div className="hidden lg:inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-dark-surface-2 border border-dark-border text-xs font-mono text-text-secondary whitespace-nowrap">
+                        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        <span className="font-bold text-emerald-800">
+                          {currentSelectedElection.constituency_name || 'Statewide'}
+                        </span>
+                        <span className="text-text-muted capitalize">
+                          ({currentSelectedElection.election_type?.replace(/_/g, ' ') || 'Contest'})
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Styled Dropdown Filter */}
+                    <div className="relative w-full sm:w-80 md:w-96">
+                      <div className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-emerald-700">
+                        {currentSelectedElection?.election_type === 'gubernatorial' ? (
+                          <Vote className="w-4 h-4 text-emerald-600" />
+                        ) : currentSelectedElection?.election_type === 'senatorial' ? (
+                          <Landmark className="w-4 h-4 text-primary-600" />
+                        ) : currentSelectedElection?.election_type === 'house_of_representatives' ? (
+                          <Building2 className="w-4 h-4 text-amber-600" />
+                        ) : (
+                          <Scale className="w-4 h-4 text-indigo-600" />
+                        )}
+                      </div>
+                      <select
+                        id="electoral-contest-dropdown"
+                        aria-label="Electoral Contest Dropdown Filter"
+                        value={selectedElectionId || room?.election?.id || ''}
+                        onChange={(e) => {
+                          const id = Number(e.target.value);
+                          setSelectedElectionId(id);
+                          setSelectedLgaId(null);
+                          setSelectedWardId(null);
+                          setSearchTerm('');
+                        }}
+                        className="w-full pl-10 pr-10 py-2.5 bg-white hover:bg-emerald-50/20 focus:bg-white border-2 border-emerald-600/30 hover:border-emerald-600 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/15 text-text-primary text-xs sm:text-sm font-semibold rounded-xl transition-all shadow-sm cursor-pointer appearance-none outline-none"
+                      >
+                        {gubernatorialContests.length > 0 && (
+                          <optgroup label="Statewide Contests" className="font-bold text-text-muted">
+                            {gubernatorialContests.map((elec: any) => (
+                              <option key={elec.id} value={elec.id} className="text-text-primary py-1 font-semibold">
+                                {elec.title || 'Gubernatorial Election'} (Statewide)
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+
+                        {senatorialContests.length > 0 && (
+                          <optgroup label="Senatorial Districts" className="font-bold text-text-muted">
+                            {senatorialContests.map((elec: any) => (
+                              <option key={elec.id} value={elec.id} className="text-text-primary py-1 font-semibold">
+                                {elec.title || `Senate — ${elec.constituency_name}`}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+
+                        {repsContests.length > 0 && (
+                          <optgroup label="Federal House of Representatives" className="font-bold text-text-muted">
+                            {repsContests.map((elec: any) => (
+                              <option key={elec.id} value={elec.id} className="text-text-primary py-1 font-semibold">
+                                {elec.title || `House of Reps — ${elec.constituency_name}`}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+
+                        {assemblyContests.length > 0 && (
+                          <optgroup label="State House of Assembly" className="font-bold text-text-muted">
+                            {assemblyContests.map((elec: any) => (
+                              <option key={elec.id} value={elec.id} className="text-text-primary py-1 font-semibold">
+                                {elec.title || `State Assembly — ${elec.constituency_name}`}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+
+                        {otherContests.length > 0 && (
+                          <optgroup label="Other Contests" className="font-bold text-text-muted">
+                            {otherContests.map((elec: any) => (
+                              <option key={elec.id} value={elec.id} className="text-text-primary py-1 font-semibold">
+                                {elec.title}
+                              </option>
+                            ))}
+                          </optgroup>
+                        )}
+                      </select>
+                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
+                        <ChevronDown className="w-4 h-4" />
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}
