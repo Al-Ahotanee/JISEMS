@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
-import { FileText, Download, FileSpreadsheet, Table2 } from 'lucide-react';
+import { FileText, Download, FileSpreadsheet, Table2, Lock } from 'lucide-react';
 import { reportsApi, geoApi } from '../services/api';
 import { LGA } from '../types';
 import PageHeader from '../components/common/PageHeader';
@@ -121,9 +121,15 @@ export default function AdminReportsPage() {
       </div>
 
       {/* Info */}
-      <div className="glass-card p-4 text-sm text-text-muted">
-        <p>📝 Reports include only <span className="text-primary-300 font-medium">verified</span> result submissions. Pending and rejected submissions are excluded.</p>
-        <p className="mt-1">🔒 All reports are generated server-side with audit logging. Report generation events are recorded in the audit log.</p>
+      <div className="glass-card p-4 text-sm text-text-muted border-l-4 border-emerald-600 bg-emerald-50/20">
+        <p className="flex items-center gap-2">
+          <FileText className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+          <span>Reports include only <span className="text-emerald-800 font-semibold">verified</span> result submissions. Pending and rejected submissions are excluded.</span>
+        </p>
+        <p className="flex items-center gap-2 mt-2">
+          <Lock className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+          <span>All reports are generated server-side with cryptographic audit logging. Report generation events are recorded in the audit log.</span>
+        </p>
       </div>
     </motion.div>
   );

@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { useDropzone } from 'react-dropzone';
-import { Upload, MapPin, CheckCircle, Camera, FileText, AlertTriangle, Wifi, WifiOff } from 'lucide-react';
+import { Upload, MapPin, CheckCircle, Camera, FileText, AlertTriangle, Wifi, WifiOff, Check } from 'lucide-react';
 import { RootState } from '../store';
 import { electionApi, geoApi, resultsApi } from '../services/api';
 import { Election, Candidate } from '../types';
@@ -141,8 +141,8 @@ export default function SubmitResultPage() {
           {steps.map((step, i) => (
             <div key={i} className="flex items-center">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
-                i < currentStep ? 'bg-primary-700 text-white' : i === currentStep ? 'bg-accent-500 text-primary-950' : 'bg-primary-50 text-text-muted'
-              }`}>{i < currentStep ? '✓' : i + 1}</div>
+                i < currentStep ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-900/20' : i === currentStep ? 'bg-accent-500 text-primary-950' : 'bg-primary-50 text-text-muted'
+              }`}>{i < currentStep ? <Check className="w-4 h-4" /> : i + 1}</div>
               {i < steps.length - 1 && <div className={`h-0.5 w-4 md:w-12 mx-1 ${i < currentStep ? 'bg-primary-600' : 'bg-primary-100'}`} />}
             </div>
           ))}

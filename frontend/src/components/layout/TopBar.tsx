@@ -49,7 +49,7 @@ function getPageTitle(pathname: string): string {
     if (pathname.startsWith(key)) return routeTitleMap[key];
   }
 
-  return 'GSEM';
+  return 'JISEMS';
 }
 
 function TopBar() {
@@ -141,13 +141,14 @@ function TopBar() {
 
           {/* Online / Offline pill */}
           <div
-            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium border ${
+            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border shadow-sm ${
               isOnline
-                ? 'bg-accent-50 text-accent-700 border-accent-200'
+                ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                 : 'bg-red-50 text-status-error border-red-200'
             }`}
           >
-            {isOnline ? <Wifi className="w-3 h-3" /> : <WifiOff className="w-3 h-3" />}
+            {isOnline ? <Wifi className="w-3 h-3 text-emerald-600" /> : <WifiOff className="w-3 h-3" />}
+            {isOnline && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
             {isOnline ? 'Online' : 'Offline'}
           </div>
 

@@ -46,7 +46,7 @@ export default function OfflineIncidentModal({ isOpen, onClose }: Props) {
           created_at: new Date().toISOString(),
           synced: 0
         });
-        toast.success('Saved Offline! Will sync when connection returns', { icon: '💾' });
+        toast.success('Saved Offline! Will sync when connection returns');
       }
       onClose();
       setFormData({ title: '', category: 'violence', priority: 'high', description: '' });

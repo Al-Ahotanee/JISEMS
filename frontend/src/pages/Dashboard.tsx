@@ -69,15 +69,27 @@ export default function DashboardPage() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
       {/* Welcome */}
-      <div className="surface-elevated relative overflow-hidden p-6 sm:p-7">
-        <div className="absolute right-0 top-0 h-full w-1.5 bg-primary-600" />
-        <p className="eyebrow">Operations workspace</p>
-        <h1 className="mt-2 font-display text-3xl font-semibold text-text-primary">
-          Welcome, {user.first_name}!
-        </h1>
-          <p className="text-text-muted mt-2">
-          {user.role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Dashboard
-        </p>
+      <div className="surface-elevated relative overflow-hidden p-6 sm:p-7 border-l-4 border-emerald-600 bg-gradient-to-r from-white via-white to-emerald-50/20">
+        <div className="absolute right-0 top-0 h-full w-1.5 bg-gradient-to-b from-emerald-600 to-primary-700" />
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-emerald-50 text-emerald-800 border border-emerald-200 shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                Jigawa State Election Operations
+              </span>
+            </div>
+            <h1 className="mt-2 font-display text-3xl font-semibold text-text-primary">
+              Welcome, {user.first_name}!
+            </h1>
+            <p className="text-text-muted text-sm mt-1">
+              {user.role.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Command Workspace • Dutse State Hub
+            </p>
+          </div>
+          <Link to="/situation-room" className="btn-outline text-xs font-bold py-2 px-4 shadow-sm hover:border-emerald-500 hover:text-emerald-800">
+            <Eye className="w-4 h-4 text-emerald-600" /> Live Situation Room
+          </Link>
+        </div>
       </div>
 
       {/* Stats for admin */}

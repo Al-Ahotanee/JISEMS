@@ -203,8 +203,8 @@ function SidebarContent({ filteredItems, userRole, userName, user, isOnline, onL
       <div className="px-6 pt-7 pb-5 border-b border-dark-border">
         <NavLink to="/app/dashboard" className="block" onClick={onLinkClick}>
           <div className="flex items-center gap-3">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-primary-600 text-white shadow-sm shadow-primary-900/20"><Vote className="h-5 w-5" /></span>
-            <span><span className="block font-display text-2xl font-semibold tracking-tight text-primary-800">JISEMS</span><span className="block text-[.59rem] font-extrabold uppercase tracking-[.16em] text-text-muted">Jigawa Election Monitor</span></span>
+            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-emerald-600 via-primary-700 to-primary-900 text-white shadow-md shadow-emerald-950/20 ring-1 ring-emerald-500/30"><Vote className="h-5 w-5" /></span>
+            <span><span className="block font-display text-2xl font-semibold tracking-tight text-primary-800">JISEMS</span><span className="block text-[.59rem] font-extrabold uppercase tracking-[.16em] text-emerald-800">Jigawa Election Monitor</span></span>
           </div>
         </NavLink>
       </div>
@@ -212,7 +212,7 @@ function SidebarContent({ filteredItems, userRole, userName, user, isOnline, onL
       {/* User info */}
       <div className="px-6 py-5 border-b border-dark-border">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-primary-50 border border-primary-200 flex items-center justify-center text-primary-700 text-sm font-extrabold">
+          <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-800 text-sm font-extrabold shadow-sm">
             {userName
               .split(' ')
               .map((n) => n[0])
@@ -222,7 +222,8 @@ function SidebarContent({ filteredItems, userRole, userName, user, isOnline, onL
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-sm font-bold text-text-primary truncate">{userName}</p>
-            <span className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-md text-[.58rem] font-extrabold bg-accent-50 text-accent-700 uppercase tracking-[.1em]">
+            <span className="inline-flex items-center gap-1 mt-1 px-2.5 py-0.5 rounded-full text-[.58rem] font-extrabold bg-emerald-50 text-emerald-800 border border-emerald-200 uppercase tracking-[.1em] shadow-sm">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
               {roleLabelMap[userRole] ?? userRole}
             </span>
           </div>

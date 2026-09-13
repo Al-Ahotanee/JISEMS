@@ -39,6 +39,7 @@
   .surface-elevated { background: rgba(255,255,255,.84); backdrop-filter: blur(15px); }
   .btn-primary { @apply inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 shadow-sm active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
   .btn-accent { @apply inline-flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 shadow-sm active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-jigawa { @apply inline-flex items-center justify-center gap-2 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 shadow-sm active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
   .btn-outline { @apply inline-flex items-center justify-center gap-2 border border-primary-500/25 bg-white/70 text-primary-700 hover:bg-primary-50 hover:border-primary-500/45 font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
   .btn-danger { @apply inline-flex items-center justify-center gap-2 bg-status-error hover:bg-red-700 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
   .input-field { @apply w-full bg-white border border-dark-border rounded-xl px-4 py-3 text-text-primary placeholder-text-muted/80 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all duration-200 shadow-sm; }
@@ -49,7 +50,8 @@
   .table-header { @apply text-left text-[.66rem] font-extrabold text-text-muted uppercase tracking-[.14em] py-4 px-4; }
   .table-cell { @apply py-4 px-4 text-sm text-text-secondary border-t border-dark-border; }
   .badge { @apply inline-flex items-center px-2.5 py-1 rounded-full text-[.65rem] font-extrabold uppercase tracking-[.08em]; }
-  .badge-success { @apply badge bg-accent-50 text-accent-700 border border-accent-200; }
+  .badge-success { @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200; }
+  .badge-jigawa { @apply badge bg-emerald-50 text-emerald-800 border border-emerald-200; }
   .badge-warning { @apply badge bg-yellow-50 text-yellow-800 border border-yellow-200; }
   .badge-danger { @apply badge bg-red-50 text-red-700 border border-red-200; }
   .badge-info { @apply badge bg-primary-50 text-primary-700 border border-primary-200; }
