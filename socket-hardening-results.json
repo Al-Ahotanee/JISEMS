@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-08-20T15:06:12.584Z",
+  "passed": 19,
+  "failed": 0,
+  "total": 19,
+  "results": [
+    {
+      "name": "anonymous: join:election 1 denied",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "anonymous: join:lga 6 denied",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "anonymous: join:ward 61 denied",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "login admin@gsem.ng",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "super_admin: join:election 1 allowed",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "super_admin: join:lga 6 allowed",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "super_admin: join:ward 61 allowed",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "login observer@gsem.ng",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "observer: join:election 1 allowed",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "observer: join:lga 6 denied",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "observer: join:ward 61 denied",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "login agent@gsem.ng",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "pu_agent: join:lga 6 allowed",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "pu_agent: join:ward 61 allowed",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "pu_agent: join:lga 1 denied",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "pu_agent: join:ward 62 denied",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "invalid token: connection rejected",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "logout invalidates admin socket token",
+      "status": "passed",
+      "detail": ""
+    },
+    {
+      "name": "revoked token: connection rejected",
+      "status": "passed",
+      "detail": ""
+    }
+  ]
+}

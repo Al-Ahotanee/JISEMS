@@ -1,0 +1,615 @@
+{
+  "generated_at": "2026-08-20T14:21:48.163Z",
+  "base_url": "http://127.0.0.1:10100/api/v1",
+  "passed": 101,
+  "failed": 0,
+  "total": 101,
+  "results": [
+    {
+      "name": "Health endpoint",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 40
+    },
+    {
+      "name": "Public situation room",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 24
+    },
+    {
+      "name": "Public situation-room invalid LGA",
+      "status": "passed",
+      "status_code": 404,
+      "duration_ms": 3
+    },
+    {
+      "name": "Auth login: admin",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 240
+    },
+    {
+      "name": "Auth login: state",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 231
+    },
+    {
+      "name": "Auth login: lga",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 234
+    },
+    {
+      "name": "Auth login: ward",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 237
+    },
+    {
+      "name": "Auth login: seeded_agent",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 222
+    },
+    {
+      "name": "Auth login: observer",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 221
+    },
+    {
+      "name": "Auth current user",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "Auth refresh token",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Geo list LGAs",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 7
+    },
+    {
+      "name": "Geo list wards",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Geo list polling units",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Geo create temporary LGA",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 3
+    },
+    {
+      "name": "Geo create temporary ward",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "Geo create temporary polling unit",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "Geo get polling unit",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Geo update polling unit",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Geo update ward",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Geo update LGA",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Geo delete temporary polling unit",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Geo delete temporary ward",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Geo delete temporary LGA",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Election list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Election detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Candidate list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Election create",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "Election update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Candidate create",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 11
+    },
+    {
+      "name": "Candidate update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Candidate delete",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Auth registration: approved PU agent",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 218
+    },
+    {
+      "name": "Admin application queue contains approved PU agent",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "Admin review approved PU agent: approved",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 7
+    },
+    {
+      "name": "Auth login: approved_agent",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 228
+    },
+    {
+      "name": "Auth registration: approved phone observer",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 227
+    },
+    {
+      "name": "Admin application queue contains approved phone observer",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Admin review approved phone observer: approved",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Auth login: phone_observer",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 225
+    },
+    {
+      "name": "Auth registration: rejected applicant",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 222
+    },
+    {
+      "name": "Admin application queue contains rejected applicant",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Admin review rejected applicant: rejected",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Rejected applicant cannot log in",
+      "status": "passed",
+      "status_code": 401,
+      "duration_ms": 1
+    },
+    {
+      "name": "Result submit with image",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 15
+    },
+    {
+      "name": "Result list as agent",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Result detail before review",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Duplicate result submission rejected",
+      "status": "passed",
+      "status_code": 409,
+      "duration_ms": 4
+    },
+    {
+      "name": "Result verify",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "Result detail after verification",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Admin create anomaly_agent",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 217
+    },
+    {
+      "name": "Auth login: anomaly_agent",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 218
+    },
+    {
+      "name": "Admin create reject_agent",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 219
+    },
+    {
+      "name": "Auth login: reject_agent",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 219
+    },
+    {
+      "name": "Anomaly-triggering result submit",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 12
+    },
+    {
+      "name": "Anomaly list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Anomaly resolve",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Result submit for rejection",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 8
+    },
+    {
+      "name": "Result reject",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Result flag forbidden for observer",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 3
+    },
+    {
+      "name": "Ward collation",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 8
+    },
+    {
+      "name": "LGA collation",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 8
+    },
+    {
+      "name": "State collation",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 6
+    },
+    {
+      "name": "Collation summary",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "State dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 11
+    },
+    {
+      "name": "LGA dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Ward dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Anomaly dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Dashboard timeline",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Admin dashboard statistics",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Dispute raise",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 5
+    },
+    {
+      "name": "Dispute list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 9
+    },
+    {
+      "name": "Dispute detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Dispute comment",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "Dispute evidence upload",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 6
+    },
+    {
+      "name": "Dispute escalate",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Dispute resolve",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Notifications list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Notifications unread count",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Notifications preferences get",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Notifications preferences update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Notifications mark all read",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Push VAPID key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 1
+    },
+    {
+      "name": "Push subscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Push unsubscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "Profile update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Profile photo upload",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Password change",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 448
+    },
+    {
+      "name": "Auth login: phone_observer_after_password_change",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 218
+    },
+    {
+      "name": "Admin users list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Admin user detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Admin audit logs",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Admin config get",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Admin config update reversible key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Report CSV",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "Report Excel",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 95
+    },
+    {
+      "name": "Report PDF",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 26
+    },
+    {
+      "name": "Privacy export",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "Privacy erasure request",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Auth logout",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "Logged-out access denied",
+      "status": "passed",
+      "status_code": 401,
+      "duration_ms": 3
+    }
+  ]
+}

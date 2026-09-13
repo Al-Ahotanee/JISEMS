@@ -1,0 +1,459 @@
+## HARDENING AUDIT
+generated=2026-08-20T15:01:24Z
+## TODO/FIXME/DEBUG
+backend/src/config/database.js:18:  password: databaseUrl ? undefined : process.env.DB_PASSWORD,
+backend/src/config/migrate.js:40:    password_hash VARCHAR(255) NOT NULL,
+backend/src/config/migrate.js:53:    token_version INTEGER NOT NULL DEFAULT 0,
+backend/src/config/migrate.js:59:  `CREATE TABLE IF NOT EXISTS refresh_tokens (
+backend/src/config/migrate.js:62:    token_hash VARCHAR(64) NOT NULL,
+backend/src/config/migrate.js:76:    password_hash VARCHAR(255),
+backend/src/config/migrate.js:294:  'CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user ON refresh_tokens(user_id)',
+backend/src/config/migrate.js:295:  'CREATE INDEX IF NOT EXISTS idx_refresh_tokens_jti ON refresh_tokens(jti)',
+backend/src/config/migrate.js:315:  'ALTER TABLE users ADD COLUMN IF NOT EXISTS token_version INTEGER NOT NULL DEFAULT 0',
+backend/src/config/migrate.js:320:  'ALTER TABLE registration_applications ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255)',
+backend/src/config/migrate.js:323:  `INSERT INTO registration_applications (email, phone, first_name, last_name, requested_role, password_hash, user_id, lga_id, ward_id, polling_unit_id, nin, status, created_at, updated_at)
+backend/src/config/migrate.js:324:   SELECT u.email, u.phone, u.first_name, u.last_name, u.role, u.password_hash, u.id, u.lga_id, u.ward_id, u.polling_unit_id, u.nin, 'pending', u.created_at, u.updated_at
+backend/src/config/migrate.js:343:    console.log(`Migration complete: ${schema.length} tables and ${indexes.length} indexes are ready.`);
+backend/src/config/seed.js:99:    const passwordHashes = {
+backend/src/config/seed.js:108:      ['admin@gsem.ng', '+2348000000001', passwordHashes.admin, 'System', 'Administrator', 'super_admin', 'active', null, null, null],
+backend/src/config/seed.js:109:      ['coordinator@gsem.ng', '+2348000000002', passwordHashes.coordinator, 'State', 'Coordinator', 'state_coordinator', 'active', null, null, null],
+backend/src/config/seed.js:110:      ['gombe-lga@gsem.ng', '+2348000000003', passwordHashes.lga, 'Gombe LGA', 'Coordinator', 'lga_coordinator', 'active', gombeIdLGA, null, null],
+backend/src/config/seed.js:111:      ['ward1@gsem.ng', '+2348000000004', passwordHashes.ward, 'Ward One', 'Officer', 'ward_officer', 'active', gombeIdLGA, firstGombeWardId, null],
+backend/src/config/seed.js:112:      ['agent@gsem.ng', '+2348000000005', passwordHashes.agent, 'PU', 'Agent', 'pu_agent', 'active', gombeIdLGA, firstGombeWardId, firstGombePUId],
+backend/src/config/seed.js:113:      ['observer@gsem.ng', '+2348000000006', passwordHashes.observer, 'Election', 'Observer', 'observer', 'active', null, null, null],
+backend/src/config/seed.js:117:        `INSERT INTO users (email, phone, password_hash, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, email_verified)
+backend/src/config/seed.js:147:    console.log(`Seed complete: ${JSON.stringify(counts)}`);
+backend/src/controllers/admin.controller.js:51:    delete user.password_hash;
+backend/src/controllers/admin.controller.js:61:    const { email, phone, password, first_name, last_name, role, lga_id, ward_id, polling_unit_id } = req.body;
+backend/src/controllers/admin.controller.js:62:    if (!password || !first_name || !last_name || !role) return ApiResponse.badRequest(res, 'Missing required fields');
+backend/src/controllers/admin.controller.js:64:    const hash = await bcrypt.hash(password, 12);
+backend/src/controllers/admin.controller.js:66:      `INSERT INTO users (email, phone, password_hash, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, email_verified)
+backend/src/controllers/admin.controller.js:121:        (email, phone, first_name, last_name, requested_role, password_hash, user_id,
+backend/src/controllers/admin.controller.js:123:       SELECT u.email, u.phone, u.first_name, u.last_name, u.role, u.password_hash, u.id,
+backend/src/controllers/admin.controller.js:179:      `SELECT id, user_id, email, phone, password_hash, first_name, last_name, requested_role,
+backend/src/controllers/admin.controller.js:206:               password_hash = COALESCE(?, password_hash), email_verified = TRUE, updated_at = NOW()
+backend/src/controllers/admin.controller.js:209:            app.lga_id, app.ward_id, app.polling_unit_id, app.nin, app.password_hash, userId]
+backend/src/controllers/admin.controller.js:213:        const hash = app.password_hash || await bcrypt.hash(tempPassword, 12);
+backend/src/controllers/admin.controller.js:216:            (email, phone, password_hash, first_name, last_name, role, status,
+backend/src/controllers/admin.controller.js:249:          `<h3>Welcome to GSEM!</h3><p>Your application has been approved.</p>${tempPassword ? `<p>Your temporary password is: <strong>${tempPassword}</strong></p><p>Please change it after login.</p>` : ''}`);
+backend/src/controllers/admin.controller.js:336:        (email, phone, first_name, last_name, requested_role, password_hash, user_id,
+backend/src/controllers/admin.controller.js:338:       SELECT u.email, u.phone, u.first_name, u.last_name, u.role, u.password_hash, u.id,
+backend/src/controllers/auth.controller.js:2:const jwt = require('jsonwebtoken');
+backend/src/controllers/auth.controller.js:9:const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-secret');
+backend/src/controllers/auth.controller.js:10:const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-refresh-secret');
+backend/src/controllers/auth.controller.js:25:      token_version: Number(user.token_version || 0)
+backend/src/controllers/auth.controller.js:34:  const token = jwt.sign(
+backend/src/controllers/auth.controller.js:39:  return { token, jti };
+backend/src/controllers/auth.controller.js:44:    const { email, phone, password, first_name, last_name, requested_role, lga_id, ward_id, polling_unit_id } = req.body;
+backend/src/controllers/auth.controller.js:46:    if (!password || !first_name || !last_name) {
+backend/src/controllers/auth.controller.js:47:      return ApiResponse.badRequest(res, 'first_name, last_name, and password are required');
+backend/src/controllers/auth.controller.js:54:    if (password.length < 8) {
+backend/src/controllers/auth.controller.js:98:    const hashedPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);
+backend/src/controllers/auth.controller.js:101:        (email, phone, password_hash, first_name, last_name, requested_role, lga_id, ward_id, polling_unit_id, nin, status, created_at, updated_at)
+backend/src/controllers/auth.controller.js:138:    const { email, phone, password } = req.body;
+backend/src/controllers/auth.controller.js:140:    if (!password || (!email && !phone)) {
+backend/src/controllers/auth.controller.js:141:      return ApiResponse.badRequest(res, 'Email or phone and password are required');
+backend/src/controllers/auth.controller.js:146:      'SELECT id, email, phone, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, profile_photo_url, email_verified, password_hash, token_version FROM users WHERE (email = ? OR phone = ?) LIMIT 1',
+backend/src/controllers/auth.controller.js:166:    // Verify password
+backend/src/controllers/auth.controller.js:167:    const isValidPassword = await bcrypt.compare(password, user.password_hash);
+backend/src/controllers/auth.controller.js:172:    // Generate tokens
+backend/src/controllers/auth.controller.js:174:    const { token: refreshToken, jti } = generateRefreshToken(user);
+backend/src/controllers/auth.controller.js:176:    // Store refresh token in DB
+backend/src/controllers/auth.controller.js:179:      `INSERT INTO refresh_tokens (id, user_id, token_hash, jti, expires_at, created_at)
+backend/src/controllers/auth.controller.js:228:    const { refreshToken: token } = req.body;
+backend/src/controllers/auth.controller.js:230:    if (!token) {
+backend/src/controllers/auth.controller.js:231:      return ApiResponse.badRequest(res, 'Refresh token is required');
+backend/src/controllers/auth.controller.js:234:    // Verify the refresh token
+backend/src/controllers/auth.controller.js:237:      decoded = jwt.verify(token, JWT_REFRESH_SECRET);
+backend/src/controllers/auth.controller.js:239:      return ApiResponse.unauthorized(res, 'Invalid or expired refresh token');
+backend/src/controllers/auth.controller.js:242:    // Check if token exists in DB and is not revoked
+backend/src/controllers/auth.controller.js:243:    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+backend/src/controllers/auth.controller.js:245:      'SELECT id FROM refresh_tokens WHERE jti = ? AND token_hash = ? AND revoked = 0 AND expires_at > NOW()',
+backend/src/controllers/auth.controller.js:246:      [decoded.jti, tokenHash]
+backend/src/controllers/auth.controller.js:250:      // Token reuse detected — revoke all tokens for this user as a security measure
+backend/src/controllers/auth.controller.js:252:        'UPDATE refresh_tokens SET revoked = 1 WHERE user_id = ?',
+backend/src/controllers/auth.controller.js:255:      logger.warn(`Refresh token reuse detected for user: ${decoded.id}`);
+backend/src/controllers/auth.controller.js:261:      'SELECT id, email, phone, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, profile_photo_url, email_verified, password_hash, token_version FROM users WHERE id = ? AND status = ? LIMIT 1',
+backend/src/controllers/auth.controller.js:271:    // Revoke old refresh token
+backend/src/controllers/auth.controller.js:273:      'UPDATE refresh_tokens SET revoked = 1 WHERE jti = ?',
+backend/src/controllers/auth.controller.js:277:    // Generate new token pair
+backend/src/controllers/auth.controller.js:279:    const { token: newRefreshToken, jti: newJti } = generateRefreshToken(user);
+backend/src/controllers/auth.controller.js:281:    // Store new refresh token
+backend/src/controllers/auth.controller.js:284:      `INSERT INTO refresh_tokens (id, user_id, token_hash, jti, expires_at, created_at)
+backend/src/controllers/auth.controller.js:305:    // Revoke all refresh tokens and invalidate all access tokens issued before logout.
+backend/src/controllers/auth.controller.js:307:      'UPDATE refresh_tokens SET revoked = 1, revoked_at = NOW() WHERE user_id = ? AND revoked = 0',
+backend/src/controllers/auth.controller.js:311:      'UPDATE users SET token_version = COALESCE(token_version, 0) + 1, updated_at = NOW() WHERE id = ?',
+backend/src/controllers/auth.controller.js:322:    logger.info(`User logged out: ${userId} (${result.affectedRows} tokens revoked)`);
+backend/src/controllers/auth.controller.js:348:      // Generate a password reset token (JWT-based, expires in 1 hour)
+backend/src/controllers/auth.controller.js:350:        { id: user.id, purpose: 'password_reset' },
+backend/src/controllers/auth.controller.js:355:      // Store the reset token hash in system_config
+backend/src/controllers/auth.controller.js:362:        [`password_reset_${user.id}`, JSON.stringify({
+backend/src/controllers/auth.controller.js:363:          token_hash: resetTokenHash,
+backend/src/controllers/auth.controller.js:369:      const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:5173'}/reset-password?token=${resetToken}`;
+backend/src/controllers/auth.controller.js:375:         VALUES (?, ?, 'password_reset_request', 'user', ?, ?, NOW())`,
+backend/src/controllers/auth.controller.js:380:    return ApiResponse.success(res, null, 'If an account with that email exists, a password reset link has been sent.');
+backend/src/controllers/auth.controller.js:383:    logger.error('Forgot password error:', error);
+backend/src/controllers/auth.controller.js:390:    const { token, password } = req.body;
+backend/src/controllers/auth.controller.js:392:    if (!token || !password) {
+backend/src/controllers/auth.controller.js:393:      return ApiResponse.badRequest(res, 'Token and new password are required');
+backend/src/controllers/auth.controller.js:396:    if (password.length < 8) {
+backend/src/controllers/auth.controller.js:400:    // Verify the reset token
+backend/src/controllers/auth.controller.js:403:      decoded = jwt.verify(token, JWT_SECRET);
+backend/src/controllers/auth.controller.js:405:      return ApiResponse.badRequest(res, 'Invalid or expired reset token');
+backend/src/controllers/auth.controller.js:408:    if (decoded.purpose !== 'password_reset') {
+backend/src/controllers/auth.controller.js:409:      return ApiResponse.badRequest(res, 'Invalid token purpose');
+backend/src/controllers/auth.controller.js:412:    // Verify stored token hash
+backend/src/controllers/auth.controller.js:413:    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
+backend/src/controllers/auth.controller.js:416:      [`password_reset_${decoded.id}`]
+backend/src/controllers/auth.controller.js:420:      return ApiResponse.badRequest(res, 'Reset token not found or already used');
+backend/src/controllers/auth.controller.js:424:    if (storedData.token_hash !== tokenHash) {
+backend/src/controllers/auth.controller.js:425:      return ApiResponse.badRequest(res, 'Invalid reset token');
+backend/src/controllers/auth.controller.js:429:      return ApiResponse.badRequest(res, 'Reset token has expired');
+backend/src/controllers/auth.controller.js:432:    // Hash new password and update
+backend/src/controllers/auth.controller.js:433:    const hashedPassword = await bcrypt.hash(password, BCRYPT_ROUNDS);
+backend/src/controllers/auth.controller.js:435:      'UPDATE users SET password_hash = ?, updated_at = NOW() WHERE id = ?',
+backend/src/controllers/auth.controller.js:439:    // Remove the reset token
+backend/src/controllers/auth.controller.js:442:      [`password_reset_${decoded.id}`]
+backend/src/controllers/auth.controller.js:447:      'UPDATE refresh_tokens SET revoked = 1, revoked_at = NOW() WHERE user_id = ? AND revoked = 0',
+backend/src/controllers/auth.controller.js:451:      'UPDATE users SET token_version = COALESCE(token_version, 0) + 1, updated_at = NOW() WHERE id = ?',
+backend/src/controllers/auth.controller.js:458:       VALUES (?, ?, 'password_reset', 'user', ?, ?, NOW())`,
+backend/src/controllers/auth.controller.js:464:    return ApiResponse.success(res, null, 'Password has been reset successfully. Please login with your new password.');
+backend/src/controllers/auth.controller.js:467:    logger.error('Reset password error:', error);
+backend/src/controllers/auth.controller.js:474:    const { token } = req.query;
+backend/src/controllers/auth.controller.js:476:    if (!token) {
+backend/src/controllers/auth.controller.js:477:      return ApiResponse.badRequest(res, 'Verification token is required');
+backend/src/controllers/auth.controller.js:482:      decoded = jwt.verify(token, JWT_SECRET);
+backend/src/controllers/auth.controller.js:484:      return ApiResponse.badRequest(res, 'Invalid or expired verification token');
+backend/src/controllers/auth.controller.js:488:      return ApiResponse.badRequest(res, 'Invalid token purpose');
+backend/src/controllers/auth.controller.js:539:    delete user.password_hash;
+backend/src/controllers/collation.controller.js:8:const HMAC_SECRET = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-hmac-secret');
+backend/src/controllers/privacy.controller.js:44:    await pool.query('DELETE FROM refresh_tokens WHERE user_id = ?', [userId]);
+backend/src/controllers/results.controller.js:9:const HMAC_SECRET = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-hmac-secret');
+backend/src/controllers/users.controller.js:47:    const { current_password, new_password } = req.body;
+backend/src/controllers/users.controller.js:48:    if (!current_password || !new_password) return ApiResponse.badRequest(res, 'Current and new password required');
+backend/src/controllers/users.controller.js:49:    if (new_password.length < 8) return ApiResponse.badRequest(res, 'Password must be at least 8 characters');
+backend/src/controllers/users.controller.js:51:    const [users] = await pool.query('SELECT password_hash FROM users WHERE id = ?', [req.user.id]);
+backend/src/controllers/users.controller.js:52:    const valid = await bcrypt.compare(current_password, users[0].password_hash);
+backend/src/controllers/users.controller.js:53:    if (!valid) return ApiResponse.badRequest(res, 'Current password is incorrect');
+backend/src/controllers/users.controller.js:55:    const hash = await bcrypt.hash(new_password, 12);
+backend/src/controllers/users.controller.js:56:    await pool.query('UPDATE users SET password_hash = ?, token_version = COALESCE(token_version, 0) + 1, updated_at = NOW() WHERE id = ?', [hash, req.user.id]);
+backend/src/controllers/users.controller.js:57:    await pool.query('UPDATE refresh_tokens SET revoked = 1, revoked_at = NOW() WHERE user_id = ? AND revoked = 0', [req.user.id]);
+backend/src/controllers/users.controller.js:60:    logger.error('Change password error:', error);
+backend/src/controllers/users.controller.js:61:    return ApiResponse.error(res, 'Failed to change password');
+backend/src/data/gombe-geo.js:280:  console.log(`\nGombe State Geographic Data`);
+backend/src/data/gombe-geo.js:281:  console.log(`${'='.repeat(50)}`);
+backend/src/data/gombe-geo.js:282:  console.log(`LGAs: ${GOMBE_GEO_DATA.lgas.length}`);
+backend/src/data/gombe-geo.js:283:  console.log(`Wards: ${totalWards}`);
+backend/src/data/gombe-geo.js:284:  console.log(`Polling Units: ${totalPUs}`);
+backend/src/data/gombe-geo.js:285:  console.log(`${'='.repeat(50)}`);
+backend/src/data/gombe-geo.js:288:    console.log(`  ${lga.name.padEnd(20)} ${lga.wards.length} wards, ${puCount} PUs`);
+backend/src/middleware/auth.js:1:const jwt = require('jsonwebtoken');
+backend/src/middleware/auth.js:6:const JWT_SECRET = process.env.JWT_SECRET || (process.env.NODE_ENV === 'production' ? null : 'gsem-development-only-secret');
+backend/src/middleware/auth.js:9:// Verify JWT token
+backend/src/middleware/auth.js:14:      return ApiResponse.unauthorized(res, 'Access token required');
+backend/src/middleware/auth.js:17:    const token = authHeader.split(' ')[1];
+backend/src/middleware/auth.js:18:    const decoded = jwt.verify(token, JWT_SECRET, { issuer: 'gsem-api' });
+backend/src/middleware/auth.js:22:      'SELECT id, email, phone, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, photo_url, token_version FROM users WHERE id = ?',
+backend/src/middleware/auth.js:31:    if (decoded.token_version !== undefined && Number(decoded.token_version) !== Number(user.token_version || 0)) {
+backend/src/middleware/auth.js:32:      return ApiResponse.unauthorized(res, 'Access token has been revoked');
+backend/src/middleware/auth.js:45:      return ApiResponse.unauthorized(res, 'Invalid token');
+backend/src/middleware/auth.js:60:    const token = authHeader.split(' ')[1];
+backend/src/middleware/auth.js:61:    const decoded = jwt.verify(token, JWT_SECRET, { issuer: 'gsem-api' });
+backend/src/middleware/auth.js:64:      'SELECT id, email, phone, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, photo_url, token_version FROM users WHERE id = ?',
+backend/src/middleware/auth.js:70:      if (decoded.token_version === undefined || Number(decoded.token_version) === Number(user.token_version || 0)) {
+backend/src/routes/index.js:38:router.post('/auth/forgot-password', authLimiter, authController.forgotPassword);
+backend/src/routes/index.js:39:router.post('/auth/reset-password', authLimiter, authController.resetPassword);
+backend/src/routes/index.js:126:router.put('/users/password', authenticate, usersController.changePassword);
+backend/src/test/phase1_test.js:9:  console.log('--- STARTING PHASE 1 CORE WORKFLOW TEST ---');
+backend/src/test/phase1_test.js:14:  console.log('\n[1] Logging in as PU Agent...');
+backend/src/test/phase1_test.js:17:    password: 'Agent@123456!'
+backend/src/test/phase1_test.js:21:  console.log('  ✓ Agent logged in successfully');
+backend/src/test/phase1_test.js:28:  console.log('\n[2] Agent submitting result...');
+backend/src/test/phase1_test.js:53:    console.log('  ✓ Result submitted successfully (ID: ' + submissionId + ')');
+backend/src/test/phase1_test.js:56:      console.log('  ! Result already submitted for this PU. We will try to fetch the existing submission ID.');
+backend/src/test/phase1_test.js:62:        console.log('  ✓ Fetched existing submission (ID: ' + submissionId + ')');
+backend/src/test/phase1_test.js:72:  console.log('\n[3] Logging in as Ward Officer...');
+backend/src/test/phase1_test.js:75:    password: 'Ward@123456!'
+backend/src/test/phase1_test.js:79:  console.log('  ✓ Ward Officer logged in successfully');
+backend/src/test/phase1_test.js:82:  console.log('\n[4] Ward Officer verifying result...');
+backend/src/test/phase1_test.js:87:    console.log('  ✓ Result verified successfully');
+backend/src/test/phase1_test.js:89:    console.log('  ! Result might already be verified: ' + (err.response?.data?.message || err.message));
+backend/src/test/phase1_test.js:93:  console.log('\n[5] Ward Officer submitting ward collation...');
+backend/src/test/phase1_test.js:102:    console.log('  ✓ Ward Collation submitted successfully');
+backend/src/test/phase1_test.js:104:    console.log('  ! Ward collation error: ' + (err.response?.data?.message || err.message));
+backend/src/test/phase1_test.js:108:  console.log('\n[6] Logging in as LGA Coordinator...');
+backend/src/test/phase1_test.js:111:    password: 'LGA@123456!'
+backend/src/test/phase1_test.js:115:  console.log('  ✓ LGA Coordinator logged in successfully');
+backend/src/test/phase1_test.js:118:  console.log('\n[7] LGA Coordinator submitting LGA collation...');
+backend/src/test/phase1_test.js:127:    console.log('  ✓ LGA Collation submitted successfully');
+backend/src/test/phase1_test.js:129:    console.log('  ! LGA collation error: ' + (err.response?.data?.message || err.message));
+backend/src/test/phase1_test.js:133:  console.log('\n[8] Logging in as State Coordinator...');
+backend/src/test/phase1_test.js:136:    password: 'Coord@123456!'
+backend/src/test/phase1_test.js:139:  console.log('  ✓ State Coordinator logged in successfully');
+backend/src/test/phase1_test.js:142:  console.log('\n[9] State Coordinator submitting State collation...');
+backend/src/test/phase1_test.js:150:    console.log('  ✓ State Collation submitted successfully');
+backend/src/test/phase1_test.js:152:    console.log('  ! State collation error: ' + (err.response?.data?.message || err.message));
+backend/src/test/phase1_test.js:156:  console.log('\n[10] Checking Dashboard APIs...');
+backend/src/test/phase1_test.js:160:  console.log('  ✓ Dashboard loaded, total PUs reported: ' + dashRes.data.data.reported_polling_units);
+backend/src/test/phase1_test.js:162:  console.log('\n--- PHASE 1 TEST COMPLETE ---');
+backend/src/test/phase2_test.js:8:  console.log('--- STARTING PHASE 2 CORE WORKFLOW TEST ---');
+backend/src/test/phase2_test.js:13:  console.log('\n[1] Logging in as Ward Officer...');
+backend/src/test/phase2_test.js:16:    password: 'Ward@123456!'
+backend/src/test/phase2_test.js:19:  console.log('  ✓ Ward Officer logged in successfully');
+backend/src/test/phase2_test.js:22:  console.log('\n[2] Ward Officer raising a dispute...');
+backend/src/test/phase2_test.js:36:    console.log('  ✓ Dispute raised successfully (ID: ' + disputeId + ')');
+backend/src/test/phase2_test.js:42:  console.log('\n[3] Adding comment to dispute...');
+backend/src/test/phase2_test.js:49:    console.log('  ✓ Comment added successfully');
+backend/src/test/phase2_test.js:55:  console.log('\n[4] Escalating the dispute to LGA level...');
+backend/src/test/phase2_test.js:60:    console.log('  ✓ Dispute escalated successfully');
+backend/src/test/phase2_test.js:66:  console.log('\n[5] Logging in as Super Admin...');
+backend/src/test/phase2_test.js:69:    password: 'Admin@GSEM2024!'
+backend/src/test/phase2_test.js:72:  console.log('  ✓ Super Admin logged in successfully');
+backend/src/test/phase2_test.js:75:  console.log('\n[6] Super Admin resolving dispute...');
+backend/src/test/phase2_test.js:83:    console.log('  ✓ Dispute resolved successfully');
+backend/src/test/phase2_test.js:89:  console.log('\n[7] Super Admin listing users...');
+backend/src/test/phase2_test.js:94:    console.log('  ✓ Users listed successfully (Count: ' + usersRes.data.data.length + ')');
+backend/src/test/phase2_test.js:100:  console.log('\n[8] Super Admin creating a new user (Observer)...');
+backend/src/test/phase2_test.js:106:      password: 'Observer@123456!',
+backend/src/test/phase2_test.js:113:    console.log('  ✓ Observer user created successfully');
+backend/src/test/phase2_test.js:119:  console.log('\n[9] Super Admin checking audit logs...');
+backend/src/test/phase2_test.js:124:    console.log('  ✓ Audit logs fetched successfully (Count: ' + logsRes.data.data.length + ')');
+backend/src/test/phase2_test.js:130:  console.log('\n[10] Ward Officer checking notifications...');
+backend/src/test/phase2_test.js:135:    console.log('  ✓ Notifications fetched successfully (Count: ' + notifRes.data.data.length + ')');
+backend/src/test/phase2_test.js:140:  console.log('\n--- PHASE 2 TEST COMPLETE ---');
+backend/src/websocket/socket.handler.js:1:const jwt = require('jsonwebtoken');
+backend/src/websocket/socket.handler.js:7:    const token = socket.handshake.auth.token;
+backend/src/websocket/socket.handler.js:8:    if (!token) {
+backend/src/websocket/socket.handler.js:14:      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+frontend/src/App.tsx:63:          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+frontend/src/App.tsx:64:          <Route path="/reset-password" element={<ResetPasswordPage />} />
+frontend/src/hooks/useAuth.ts:13:  const login = async (email: string, password: string) => {
+frontend/src/hooks/useAuth.ts:15:      const response = await authApi.login({ email, password });
+frontend/src/hooks/useSocket.ts:15:        auth: { token: accessToken || undefined },
+frontend/src/pages/AdminApplications.tsx:23:    onSuccess: (res) => { queryClient.invalidateQueries({ queryKey: ['applications'] }); setSelectedApp(null); setReviewNotes(''); toast.success(`Application ${res?.data?.data?.tempPassword ? `approved. Temp password: ${res.data.data.tempPassword}` : 'processed'}`); },
+frontend/src/pages/AdminUsers.tsx:19:  const [userForm, setUserForm] = useState({ first_name: '', last_name: '', email: '', phone: '', password: '', role: 'pu_agent', lga_id: '', ward_id: '', polling_unit_id: '' });
+frontend/src/pages/AdminUsers.tsx:52:      setUserForm({ first_name: '', last_name: '', email: '', phone: '', password: '', role: 'pu_agent', lga_id: '', ward_id: '', polling_unit_id: '' }); 
+frontend/src/pages/AdminUsers.tsx:91:      password: '', role: u.role || 'pu_agent', 
+frontend/src/pages/AdminUsers.tsx:105:      {!showEdit && <div><label className="label-text">Password</label><input type="password" value={userForm.password} onChange={e => setUserForm({ ...userForm, password: e.target.value })} className="input-field" /></div>}
+frontend/src/pages/AdminUsers.tsx:146:      <div className="flex items-center justify-between"><PageHeader title="User Management" /><button onClick={() => { setShowCreate(!showCreate); setShowEdit(false); setUserForm({ first_name: '', last_name: '', email: '', phone: '', password: '', role: 'pu_agent', lga_id: '', ward_id: '', polling_unit_id: '' }); }} className="btn-accent flex items-center gap-2"><Plus className="w-4 h-4" /> New User</button></div>
+frontend/src/pages/ForgotPassword.tsx:44:              <p className="text-text-muted text-sm mb-6">We've sent a password reset link to {email}</p>
+frontend/src/pages/LGACollation.tsx:43:        <label className="label-text">PIN</label><input type="password" value={pin} onChange={e => setPin(e.target.value)} className="input-field mb-4" maxLength={6} />
+frontend/src/pages/Login.tsx:16:  password: z.string().min(8, 'Password must be at least 8 characters'),
+frontend/src/pages/Login.tsx:39:      const payload = identifier.includes('@') ? { email: identifier, password: data.password } : { phone: identifier, password: data.password };
+frontend/src/pages/Login.tsx:108:                  {...register('password')}
+## SQL RISK PATTERNS
+backend/src/config/seed.js:144:      const row = await firstValue(`SELECT COUNT(*)::INTEGER AS count FROM ${table}`);
+backend/src/controllers/admin.controller.js:20:    const [countResult] = await pool.query(`SELECT COUNT(*) as total FROM users u ${where}`, params);
+backend/src/controllers/admin.controller.js:96:    await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params);
+backend/src/controllers/admin.controller.js:143:    const [countResult] = await pool.query(`SELECT COUNT(*) as total FROM registration_applications ra ${where}`, params);
+backend/src/controllers/admin.controller.js:284:    const [countResult] = await pool.query(`SELECT COUNT(*) as total FROM audit_logs al ${where}`, params);
+backend/src/controllers/auth.controller.js:91:      `SELECT id FROM registration_applications WHERE status = 'pending' AND (${applicationConditions.join(' OR ')}) LIMIT 1`,
+backend/src/controllers/disputes.controller.js:59:    const [countResult] = await pool.query(`SELECT COUNT(*) as total FROM disputes d ${where}`, params);
+backend/src/controllers/election.controller.js:164:      `UPDATE elections SET ${updates.join(', ')} WHERE id = ?`,
+backend/src/controllers/election.controller.js:301:    await pool.query(`UPDATE candidates SET ${updates.join(', ')} WHERE id = ?`, params);
+backend/src/controllers/results.controller.js:135:      `SELECT id FROM candidates WHERE election_id = ? AND id IN (${candidateIds.map(() => '?').join(',')})`,
+backend/src/controllers/users.controller.js:20:    await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, params);
+## UPLOAD/PATH/ERROR HANDLING
+backend/src/app.js:70:  } catch (error) {
+backend/src/app.js:82:    return res.sendFile(path.join(frontendDist, 'index.html'));
+backend/src/config/migrate.js:344:  } catch (error) {
+backend/src/config/seed.js:148:  } catch (error) {
+backend/src/controllers/admin.controller.js:35:  } catch (error) {
+backend/src/controllers/admin.controller.js:53:  } catch (error) {
+backend/src/controllers/admin.controller.js:71:  } catch (error) {
+backend/src/controllers/admin.controller.js:98:  } catch (error) {
+backend/src/controllers/admin.controller.js:108:  } catch (error) {
+backend/src/controllers/admin.controller.js:160:  } catch (error) {
+backend/src/controllers/admin.controller.js:261:  } catch (error) {
+backend/src/controllers/admin.controller.js:294:  } catch (error) {
+backend/src/controllers/admin.controller.js:304:  } catch (error) {
+backend/src/controllers/admin.controller.js:324:  } catch (error) {
+backend/src/controllers/admin.controller.js:367:  } catch (error) {
+backend/src/controllers/anomaly.controller.js:19:    } catch (error) {
+backend/src/controllers/anomaly.controller.js:39:    } catch (error) {
+backend/src/controllers/auth.controller.js:130:  } catch (error) {
+backend/src/controllers/auth.controller.js:220:  } catch (error) {
+backend/src/controllers/auth.controller.js:238:    } catch (err) {
+backend/src/controllers/auth.controller.js:295:  } catch (error) {
+backend/src/controllers/auth.controller.js:326:  } catch (error) {
+backend/src/controllers/auth.controller.js:382:  } catch (error) {
+backend/src/controllers/auth.controller.js:404:    } catch (err) {
+backend/src/controllers/auth.controller.js:466:  } catch (error) {
+backend/src/controllers/auth.controller.js:483:    } catch (err) {
+backend/src/controllers/auth.controller.js:511:  } catch (error) {
+backend/src/controllers/auth.controller.js:543:  } catch (error) {
+backend/src/controllers/collation.controller.js:172:  } catch (error) {
+backend/src/controllers/collation.controller.js:330:  } catch (error) {
+backend/src/controllers/collation.controller.js:464:  } catch (error) {
+backend/src/controllers/collation.controller.js:551:  } catch (error) {
+backend/src/controllers/dashboard.controller.js:102:  } catch (error) {
+backend/src/controllers/dashboard.controller.js:161:  } catch (error) {
+backend/src/controllers/dashboard.controller.js:204:  } catch (error) {
+backend/src/controllers/dashboard.controller.js:252:  } catch (error) {
+backend/src/controllers/dashboard.controller.js:268:  } catch (error) {
+backend/src/controllers/disputes.controller.js:31:  } catch (error) {
+backend/src/controllers/disputes.controller.js:73:  } catch (error) {
+backend/src/controllers/disputes.controller.js:110:  } catch (error) {
+backend/src/controllers/disputes.controller.js:127:  } catch (error) {
+backend/src/controllers/disputes.controller.js:145:  } catch (error) {
+backend/src/controllers/disputes.controller.js:168:  } catch (error) {
+backend/src/controllers/disputes.controller.js:194:  } catch (error) {
+backend/src/controllers/election.controller.js:46:  } catch (error) {
+backend/src/controllers/election.controller.js:90:  } catch (error) {
+backend/src/controllers/election.controller.js:129:  } catch (error) {
+backend/src/controllers/election.controller.js:184:  } catch (error) {
+backend/src/controllers/election.controller.js:220:  } catch (error) {
+backend/src/controllers/election.controller.js:270:  } catch (error) {
+backend/src/controllers/election.controller.js:307:  } catch (error) {
+backend/src/controllers/election.controller.js:341:  } catch (error) {
+backend/src/controllers/geo.controller.js:28:  } catch (error) {
+backend/src/controllers/geo.controller.js:67:  } catch (error) {
+backend/src/controllers/geo.controller.js:136:  } catch (error) {
+backend/src/controllers/geo.controller.js:175:  } catch (error) {
+backend/src/controllers/geo.controller.js:190:  } catch (error) {
+backend/src/controllers/geo.controller.js:205:  } catch (error) {
+backend/src/controllers/geo.controller.js:216:  } catch (error) {
+backend/src/controllers/geo.controller.js:231:  } catch (error) {
+backend/src/controllers/geo.controller.js:246:  } catch (error) {
+backend/src/controllers/geo.controller.js:257:  } catch (error) {
+backend/src/controllers/geo.controller.js:272:  } catch (error) {
+backend/src/controllers/geo.controller.js:287:  } catch (error) {
+backend/src/controllers/geo.controller.js:298:  } catch (error) {
+backend/src/controllers/notifications.controller.js:22:  } catch (error) {
+backend/src/controllers/notifications.controller.js:34:  } catch (error) {
+backend/src/controllers/notifications.controller.js:44:  } catch (error) {
+backend/src/controllers/notifications.controller.js:54:  } catch (error) {
+backend/src/controllers/notifications.controller.js:64:  } catch (error) {
+backend/src/controllers/notifications.controller.js:86:  } catch (error) {
+backend/src/controllers/privacy.controller.js:28:  } catch (error) {
+backend/src/controllers/privacy.controller.js:49:  } catch (error) {
+backend/src/controllers/public.controller.js:115:  } catch (error) {
+backend/src/controllers/public.controller.js:191:  } catch (error) {
+backend/src/controllers/public.controller.js:224:  } catch (error) {
+backend/src/controllers/push.controller.js:18:  } catch (error) {
+backend/src/controllers/push.controller.js:29:  } catch (error) {
+backend/src/controllers/reports.controller.js:101:  } catch (error) {
+backend/src/controllers/reports.controller.js:188:  } catch (error) {
+backend/src/controllers/reports.controller.js:225:  } catch (error) {
+backend/src/controllers/results.controller.js:49:      } catch (e) {
+backend/src/controllers/results.controller.js:230:      } catch (err) {
+backend/src/controllers/results.controller.js:288:  } catch (error) {
+backend/src/controllers/results.controller.js:379:  } catch (error) {
+backend/src/controllers/results.controller.js:432:  } catch (error) {
+backend/src/controllers/results.controller.js:534:  } catch (error) {
+backend/src/controllers/results.controller.js:608:  } catch (error) {
+backend/src/controllers/results.controller.js:670:  } catch (error) {
+backend/src/controllers/users.controller.js:27:  } catch (error) {
+backend/src/controllers/users.controller.js:39:  } catch (error) {
+backend/src/controllers/users.controller.js:59:  } catch (error) {
+backend/src/middleware/audit.js:51:  } catch (error) {
+backend/src/middleware/auth.js:40:  } catch (error) {
+backend/src/middleware/auth.js:74:  } catch (error) {
+backend/src/middleware/upload.js:1:const multer = require('multer');
+backend/src/middleware/upload.js:9:  const fullPath = path.join(__dirname, '..', '..', dir);
+backend/src/middleware/upload.js:16:const storage = multer.diskStorage({
+backend/src/middleware/upload.js:23:    const fullPath = path.join(__dirname, '..', '..', dest);
+backend/src/middleware/upload.js:53:const upload = multer({
+backend/src/middleware/upload.js:66:    if (err instanceof multer.MulterError) {
+backend/src/middleware/upload.js:78:    if (err instanceof multer.MulterError) {
+backend/src/middleware/upload.js:90:    if (err instanceof multer.MulterError) {
+backend/src/middleware/upload.js:102:    if (err instanceof multer.MulterError) {
+backend/src/services/anomaly.service.js:82:        } catch (err) {
+backend/src/services/anomaly.service.js:91:    } catch (error) {
+backend/src/services/anomaly.service.js:164:    } catch (error) {
+backend/src/services/notification.service.js:37:      } catch (err) {
+backend/src/services/notification.service.js:51:    } catch (error) {
+backend/src/services/notification.service.js:68:    } catch (error) {
+backend/src/services/notification.service.js:87:    } catch (error) {
+backend/src/services/notification.service.js:118:    } catch (error) {
+backend/src/services/notification.service.js:141:        } catch (err) {
+backend/src/services/notification.service.js:149:    } catch (error) {
+backend/src/services/notification.service.js:168:    } catch (error) {
+backend/src/services/notification.service.js:185:    } catch (error) {
+backend/src/test/phase1_test.js:24:  const dummyImagePath = path.join(__dirname, 'dummy_result.jpg');
+backend/src/test/phase1_test.js:25:  fs.writeFileSync(dummyImagePath, 'dummy image data');
+backend/src/test/phase1_test.js:54:  } catch (err) {
+backend/src/test/phase1_test.js:88:  } catch (err) {
+backend/src/test/phase1_test.js:103:  } catch (err) {
+backend/src/test/phase1_test.js:128:  } catch (err) {
+backend/src/test/phase1_test.js:151:  } catch (err) {
+backend/src/test/phase2_test.js:37:  } catch (err) {
+backend/src/test/phase2_test.js:50:  } catch (err) {
+backend/src/test/phase2_test.js:61:  } catch (err) {
+backend/src/test/phase2_test.js:84:  } catch (err) {
+backend/src/test/phase2_test.js:95:  } catch (err) {
+backend/src/test/phase2_test.js:114:  } catch (err) {
+backend/src/test/phase2_test.js:125:  } catch (err) {
+backend/src/test/phase2_test.js:136:  } catch (err) {
+backend/src/websocket/socket.handler.js:17:    } catch (err) {
+## FRONTEND ROUTES
+frontend/src/App.tsx:43:  if (roles && user && !roles.includes(user.role)) return <Navigate to="/app/dashboard" replace />;
+frontend/src/App.tsx:67:            <Route index element={<Navigate to="/app/dashboard" replace />} />
+frontend/src/App.tsx:79:            <Route path="collation" element={<Navigate to="/app/dashboard" replace />} />
+frontend/src/components/layout/Sidebar.tsx:35:  roles: string[];
+frontend/src/components/layout/Sidebar.tsx:41:  { label: 'Dashboard', to: '/app/dashboard', icon: LayoutDashboard, roles: ['*'] },
+frontend/src/components/layout/Sidebar.tsx:42:  { label: 'Notifications', to: '/app/notifications', icon: Bell, roles: ['*'] },
+frontend/src/components/layout/Sidebar.tsx:45:  { label: 'Submit Result', to: '/app/results/submit', icon: FileUp, roles: ['pu_agent'] },
+frontend/src/components/layout/Sidebar.tsx:48:  { label: 'Results', to: '/app/results', icon: BarChart3, roles: ['pu_agent', 'ward_officer', 'lga_coordinator', 'state_coordinator', 'observer'] },
+frontend/src/components/layout/Sidebar.tsx:49:  { label: 'Collation', to: '/app/collation', icon: Layers, roles: ['ward_officer', 'lga_coordinator', 'state_coordinator'] },
+frontend/src/components/layout/Sidebar.tsx:52:  { label: 'Disputes', to: '/app/disputes', icon: AlertTriangle, roles: ['ward_officer', 'lga_coordinator', 'state_coordinator'] },
+frontend/src/components/layout/Sidebar.tsx:55:  { label: 'Situation Room', to: '/situation-room', icon: Radio, roles: ['observer'] },
+frontend/src/components/layout/Sidebar.tsx:58:  { label: 'Users', to: '/app/admin/users', icon: Users, roles: ['super_admin'], section: 'Admin' },
+frontend/src/components/layout/Sidebar.tsx:59:  { label: 'Applications', to: '/app/admin/applications', icon: ClipboardList, roles: ['super_admin'], section: 'Admin' },
+frontend/src/components/layout/Sidebar.tsx:60:  { label: 'Polling Units', to: '/app/admin/polling-units', icon: MapPin, roles: ['super_admin'], section: 'Admin' },
+frontend/src/components/layout/Sidebar.tsx:61:  { label: 'Elections', to: '/app/admin/elections', icon: Vote, roles: ['super_admin'], section: 'Admin' },
+frontend/src/components/layout/Sidebar.tsx:62:  { label: 'Audit Log', to: '/app/admin/audit', icon: ShieldCheck, roles: ['super_admin'], section: 'Admin' },
+frontend/src/components/layout/Sidebar.tsx:63:  { label: 'Anti-Rigging', to: '/app/admin/anti-rigging', icon: ShieldAlert, roles: ['super_admin', 'state_coordinator'], section: 'Admin' },
+frontend/src/components/layout/Sidebar.tsx:64:  { label: 'Reports', to: '/app/admin/reports', icon: FileText, roles: ['super_admin', 'state_coordinator', 'lga_coordinator'], section: 'Admin' },
+frontend/src/components/layout/Sidebar.tsx:67:  { label: 'Profile', to: '/app/profile', icon: UserCircle, roles: ['*'] },
+frontend/src/components/layout/Sidebar.tsx:203:        <NavLink to="/app/dashboard" className="block" onClick={onLinkClick}>
+frontend/src/components/layout/Sidebar.tsx:242:            if (userRole === 'ward_officer' && user?.ward_id) targetPath = `/app/collation/ward/${user.ward_id}`;
+frontend/src/components/layout/Sidebar.tsx:243:            else if (userRole === 'lga_coordinator' && user?.lga_id) targetPath = `/app/collation/lga/${user.lga_id}`;
+frontend/src/components/layout/Sidebar.tsx:244:            else if (userRole === 'state_coordinator') targetPath = `/app/collation/state`;
+## DEPLOYMENT
+services:
+  - type: web
+    name: gsem
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm run migrate && npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: HMAC_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false
+      - key: LOG_LEVEL
+        value: info
+NODE_ENV=development
+PORT=10000
+HOST=0.0.0.0
+DATABASE_URL=postgresql://user:password@host/database?sslmode=require
+JWT_SECRET=replace-with-a-long-random-secret
+JWT_REFRESH_SECRET=replace-with-a-different-long-random-secret
+HMAC_SECRET=replace-with-a-long-random-signing-secret
+FRONTEND_URL=http://localhost:5173
+DB_POOL_MAX=10
+DB_IDLE_TIMEOUT_MS=30000
+DB_CONNECTION_TIMEOUT_MS=10000
+JSON_BODY_LIMIT=2mb
+URLENCODED_BODY_LIMIT=2mb
+GLOBAL_RATE_LIMIT=500
+AUTH_RATE_LIMIT_MAX=20
+LOG_LEVEL=debug
+UPLOAD_DIR=backend/uploads
+MAX_FILE_SIZE=10485760
+## GIT STATUS

@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: jisems
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci --include=dev && npm run build
+    startCommand: npm run migrate && npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: HMAC_SECRET
+        generateValue: true
+      - key: LOG_LEVEL
+        value: info

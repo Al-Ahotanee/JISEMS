@@ -1,0 +1,76 @@
+/* Quiet Atlas — cloud-white operational canvas, cobalt wayfinding, moss confirmation, sand geography. */
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root { color-scheme: light; font-synthesis: none; text-rendering: optimizeLegibility; }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; background: #f5f6f3; }
+  body {
+    min-width: 320px;
+    overflow-x: hidden;
+    background: radial-gradient(circle at 90% -12%, rgba(49,89,138,.10), transparent 31rem), radial-gradient(circle at 5% 38%, rgba(61,116,104,.08), transparent 26rem), #f5f6f3;
+    color: #172d41;
+    font-family: Manrope, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body, button, input, textarea, select { font-variant-numeric: tabular-nums; }
+  button, a, input, textarea, select { -webkit-tap-highlight-color: transparent; }
+  button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid rgba(49,89,138,.55); outline-offset: 3px; }
+  h1,h2,h3,h4,h5,h6 { font-family: "Source Serif 4", serif; letter-spacing: -.025em; }
+  code,pre,.font-mono { font-family: "DM Mono", monospace; }
+  ::selection { background: #bcd3e5; color: #172d41; }
+  ::-webkit-scrollbar { width: 9px; height: 9px; }
+  ::-webkit-scrollbar-track { background: #edf2f3; }
+  ::-webkit-scrollbar-thumb { background: #b8c6ca; border: 2px solid #edf2f3; border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: #8eabb3; }
+}
+
+@layer components {
+  .glass-card, .glass-card-accent, .surface-elevated {
+    @apply bg-dark-surface border border-dark-border rounded-2xl;
+    box-shadow: 0 10px 28px rgba(22,45,65,.055), 0 1px 2px rgba(22,45,65,.035);
+  }
+  .glass-card-accent { border-color: rgba(49,89,138,.25); box-shadow: 0 14px 35px rgba(49,89,138,.08), 0 1px 2px rgba(22,45,65,.04); }
+  .surface-elevated { background: rgba(255,255,255,.84); backdrop-filter: blur(15px); }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 shadow-sm active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-accent { @apply inline-flex items-center justify-center gap-2 bg-accent-500 hover:bg-accent-600 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 shadow-sm active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-outline { @apply inline-flex items-center justify-center gap-2 border border-primary-500/25 bg-white/70 text-primary-700 hover:bg-primary-50 hover:border-primary-500/45 font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
+  .btn-danger { @apply inline-flex items-center justify-center gap-2 bg-status-error hover:bg-red-700 text-white font-semibold py-2.5 px-5 rounded-xl transition-all duration-200 active:scale-[.98] disabled:opacity-50 disabled:pointer-events-none; }
+  .input-field { @apply w-full bg-white border border-dark-border rounded-xl px-4 py-3 text-text-primary placeholder-text-muted/80 focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-500/10 transition-all duration-200 shadow-sm; }
+  .label-text { @apply block text-[.68rem] font-extrabold text-text-secondary mb-2 uppercase tracking-[.14em]; }
+  .sidebar-link { @apply flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-text-secondary hover:text-primary-700 hover:bg-primary-50 transition-all duration-200; }
+  .sidebar-link-active { @apply flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-primary-700 bg-primary-50 border border-primary-100 shadow-sm; }
+  .stat-card { @apply glass-card p-5 hover:border-primary-300/60 transition-all duration-300; }
+  .table-header { @apply text-left text-[.66rem] font-extrabold text-text-muted uppercase tracking-[.14em] py-4 px-4; }
+  .table-cell { @apply py-4 px-4 text-sm text-text-secondary border-t border-dark-border; }
+  .badge { @apply inline-flex items-center px-2.5 py-1 rounded-full text-[.65rem] font-extrabold uppercase tracking-[.08em]; }
+  .badge-success { @apply badge bg-accent-50 text-accent-700 border border-accent-200; }
+  .badge-warning { @apply badge bg-yellow-50 text-yellow-800 border border-yellow-200; }
+  .badge-danger { @apply badge bg-red-50 text-red-700 border border-red-200; }
+  .badge-info { @apply badge bg-primary-50 text-primary-700 border border-primary-200; }
+  .badge-neutral { @apply badge bg-slate-100 text-slate-600 border border-slate-200; }
+  .eyebrow { @apply text-[.67rem] font-extrabold uppercase tracking-[.19em] text-primary-600; }
+  .section-heading { @apply font-display text-3xl sm:text-4xl font-semibold text-text-primary; }
+  .atlas-grid { background-image: linear-gradient(rgba(49,89,138,.055) 1px, transparent 1px), linear-gradient(90deg, rgba(49,89,138,.055) 1px, transparent 1px); background-size: 34px 34px; }
+  .atlas-rule { border-color: rgba(49,89,138,.17); }
+}
+
+/* Quiet Atlas map treatment: readable terrain-like light geometry rather than a dark-neon map. */
+.leaflet-container { background: #e8eeee !important; }
+.leaflet-tile-pane { filter: saturate(.6) contrast(.93) brightness(1.08) hue-rotate(8deg); }
+.leaflet-popup-content-wrapper { background: #fff !important; color: #172d41 !important; border: 1px solid #d8e1e2 !important; border-radius: 14px !important; box-shadow: 0 12px 30px rgba(22,45,65,.14) !important; }
+.leaflet-popup-tip { background: #fff !important; }
+.leaflet-control-zoom a { background: #fff !important; color: #31598a !important; border-color: #d8e1e2 !important; }
+
+@media print {
+  body { background:#fff !important; color:#000 !important; }
+  .no-print { display:none !important; }
+  .print-only { display:block !important; }
+  .glass-card,.glass-card-accent,.surface-elevated { background:none !important; border:1px solid #bbb !important; box-shadow:none !important; color:#000 !important; }
+  .text-text-primary,.text-text-secondary,.text-text-muted,.text-accent-500 { color:#000 !important; }
+}

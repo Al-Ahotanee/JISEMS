@@ -1,0 +1,1270 @@
+{
+  "generated_at": "2026-08-20T16:00:58.921Z",
+  "base_url": "http://127.0.0.1:10103/api/v1",
+  "frontend_base": "http://127.0.0.1:10103",
+  "roles_tested": [
+    "super_admin",
+    "state_coordinator",
+    "lga_coordinator",
+    "ward_officer",
+    "pu_agent",
+    "observer"
+  ],
+  "passed": 209,
+  "failed": 0,
+  "total": 209,
+  "results": [
+    {
+      "name": "role matrix: reset isolated workflow state",
+      "status": "passed"
+    },
+    {
+      "name": "super_admin: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 274
+    },
+    {
+      "name": "state_coordinator: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 220
+    },
+    {
+      "name": "lga_coordinator: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 227
+    },
+    {
+      "name": "ward_officer: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 238
+    },
+    {
+      "name": "pu_agent: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 228
+    },
+    {
+      "name": "observer: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 226
+    },
+    {
+      "name": "super_admin: create fixture agent lga-review",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 225
+    },
+    {
+      "name": "fixture agent lga-review: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 228
+    },
+    {
+      "name": "super_admin: create fixture agent state-review",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 232
+    },
+    {
+      "name": "fixture agent state-review: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 240
+    },
+    {
+      "name": "super_admin: create fixture agent admin-review",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 223
+    },
+    {
+      "name": "fixture agent admin-review: login",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 226
+    },
+    {
+      "name": "lga review fixture: submit result",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 20
+    },
+    {
+      "name": "state review fixture: submit result",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 11
+    },
+    {
+      "name": "admin review fixture: submit result",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 12
+    },
+    {
+      "name": "super_admin: current user",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "super_admin: list notifications",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "super_admin: unread count",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "super_admin: get preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "super_admin: update preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: mark all notifications read",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "super_admin: VAPID key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 1
+    },
+    {
+      "name": "super_admin: push subscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: push unsubscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: profile update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "super_admin: election list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "super_admin: election detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "super_admin: candidate list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "super_admin: result list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "super_admin: timeline",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "super_admin: dispute list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: collation summary",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: raise dispute",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: get dispute",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "super_admin: add dispute comment",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 3
+    },
+    {
+      "name": "super_admin: add dispute evidence",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 5
+    },
+    {
+      "name": "super_admin: privacy export",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 7
+    },
+    {
+      "name": "super_admin: verify result",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 8
+    },
+    {
+      "name": "super_admin: state dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 12
+    },
+    {
+      "name": "super_admin: admin dashboard stats",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "super_admin: admin users",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "super_admin: applications",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: audit logs",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "super_admin: get config",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "super_admin: update config",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: csv report",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "super_admin: excel report",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 154
+    },
+    {
+      "name": "super_admin: pdf report",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 27
+    },
+    {
+      "name": "super_admin: ward collation",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 10
+    },
+    {
+      "name": "super_admin: lga collation",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 8
+    },
+    {
+      "name": "super_admin: state collation",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 6
+    },
+    {
+      "name": "state_coordinator: current user",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: list notifications",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: unread count",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: get preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: update preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: mark all notifications read",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: VAPID key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 1
+    },
+    {
+      "name": "state_coordinator: push subscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: push unsubscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: profile update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: election list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: election detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: candidate list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: result list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: timeline",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: dispute list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: collation summary",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: raise dispute",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: get dispute",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "state_coordinator: add dispute comment",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: add dispute evidence",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: privacy export",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: flag result",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 9
+    },
+    {
+      "name": "state_coordinator: state dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 11
+    },
+    {
+      "name": "state_coordinator: state collation",
+      "status": "passed",
+      "status_code": 409,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: anomaly list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: csv report",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "state_coordinator: admin users forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: election create forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 3
+    },
+    {
+      "name": "state_coordinator: forbidden POST /geo/lgas",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: forbidden GET /admin/users",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "state_coordinator: forbidden POST /elections",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: current user",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: list notifications",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: unread count",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: get preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: update preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: mark all notifications read",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "lga_coordinator: VAPID key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 1
+    },
+    {
+      "name": "lga_coordinator: push subscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: push unsubscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: profile update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: election list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "lga_coordinator: election detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "lga_coordinator: candidate list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: result list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "lga_coordinator: timeline",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "lga_coordinator: dispute list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: collation summary",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "lga_coordinator: raise dispute",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: get dispute",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "lga_coordinator: add dispute comment",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: add dispute evidence",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 5
+    },
+    {
+      "name": "lga_coordinator: privacy export",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "lga_coordinator: reject result",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 8
+    },
+    {
+      "name": "lga_coordinator: lga dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "lga_coordinator: lga collation",
+      "status": "passed",
+      "status_code": 409,
+      "duration_ms": 4
+    },
+    {
+      "name": "lga_coordinator: csv report",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "lga_coordinator: state collation forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "lga_coordinator: anomaly list forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "lga_coordinator: forbidden POST /geo/lgas",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "lga_coordinator: forbidden GET /admin/users",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "lga_coordinator: forbidden POST /collation/state",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: current user",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "ward_officer: list notifications",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "ward_officer: unread count",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: get preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: update preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "ward_officer: mark all notifications read",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "ward_officer: VAPID key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 1
+    },
+    {
+      "name": "ward_officer: push subscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: push unsubscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "ward_officer: profile update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "ward_officer: election list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "ward_officer: election detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "ward_officer: candidate list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "ward_officer: result list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "ward_officer: timeline",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: dispute list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "ward_officer: collation summary",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: raise dispute",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "ward_officer: get dispute",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "ward_officer: add dispute comment",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: add dispute evidence",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 3
+    },
+    {
+      "name": "ward_officer: privacy export",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "ward_officer: ward dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "ward_officer: ward collation",
+      "status": "passed",
+      "status_code": 409,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: lga collation forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: reports forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: forbidden POST /geo/lgas",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: forbidden GET /admin/users",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "ward_officer: forbidden POST /collation/lga",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: current user",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "pu_agent: list notifications",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: unread count",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: get preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: update preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: mark all notifications read",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: VAPID key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 1
+    },
+    {
+      "name": "pu_agent: push subscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: push unsubscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: profile update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "pu_agent: election list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: election detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "pu_agent: candidate list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "pu_agent: result list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: timeline",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: dispute list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "pu_agent: collation summary",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: raise dispute",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "pu_agent: get dispute",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: add dispute comment",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: add dispute evidence",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: privacy export",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent role: submit result",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 14
+    },
+    {
+      "name": "pu_agent: duplicate result denied",
+      "status": "passed",
+      "status_code": 409,
+      "duration_ms": 4
+    },
+    {
+      "name": "pu_agent: verify forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: reports forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 1
+    },
+    {
+      "name": "pu_agent: state collation forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 3
+    },
+    {
+      "name": "pu_agent: forbidden POST /geo/lgas",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 1
+    },
+    {
+      "name": "pu_agent: forbidden GET /admin/users",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "pu_agent: forbidden POST /collation/ward",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 1
+    },
+    {
+      "name": "pu_agent: forbidden GET /reports/csv",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: current user",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: list notifications",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: unread count",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: get preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: update preferences",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: mark all notifications read",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: VAPID key",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 1
+    },
+    {
+      "name": "observer: push subscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: push unsubscribe",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: profile update",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "observer: election list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: election detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: candidate list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 3
+    },
+    {
+      "name": "observer: result list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "observer: result detail",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 5
+    },
+    {
+      "name": "observer: timeline",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: dispute list",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "observer: collation summary",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: raise dispute",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 4
+    },
+    {
+      "name": "observer: get dispute",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 6
+    },
+    {
+      "name": "observer: add dispute comment",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 5
+    },
+    {
+      "name": "observer: add dispute evidence",
+      "status": "passed",
+      "status_code": 201,
+      "duration_ms": 6
+    },
+    {
+      "name": "observer: privacy export",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 4
+    },
+    {
+      "name": "observer: state dashboard",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 9
+    },
+    {
+      "name": "observer: public Situation Room",
+      "status": "passed",
+      "status_code": 200,
+      "duration_ms": 16
+    },
+    {
+      "name": "observer: result submission forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: collation forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: report forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 1
+    },
+    {
+      "name": "observer: admin users forbidden",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 1
+    },
+    {
+      "name": "observer: forbidden POST /geo/lgas",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 5
+    },
+    {
+      "name": "observer: forbidden GET /admin/users",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: forbidden POST /results",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    },
+    {
+      "name": "observer: forbidden POST /collation/state",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 1
+    },
+    {
+      "name": "observer: forbidden GET /reports/csv",
+      "status": "passed",
+      "status_code": 403,
+      "duration_ms": 2
+    }
+  ]
+}
