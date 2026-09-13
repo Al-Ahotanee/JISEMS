@@ -5,3 +5,4 @@ dist/
 uploads/
 coverage/
 .DS_Store
+*.tsbuildinfo
