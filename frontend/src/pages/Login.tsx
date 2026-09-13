@@ -38,7 +38,9 @@ export default function LoginPage() {
     setErrorMessage(null);
     try {
       const identifier = (data.email || data.phone || '').trim();
-      const payload = identifier.includes('@') ? { email: identifier, password: data.password } : { phone: identifier, password: data.password };
+      const payload = identifier.includes('@')
+        ? { email: identifier.toLowerCase().trim(), password: data.password }
+        : { phone: identifier, password: data.password };
       const response = await authApi.login(payload);
       if (response.data.success) {
         dispatch(setCredentials(response.data.data));

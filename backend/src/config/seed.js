@@ -219,7 +219,7 @@ async function seed() {
       await pool.query(
         `INSERT INTO users (email, phone, password_hash, first_name, last_name, role, status, lga_id, ward_id, polling_unit_id, email_verified)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE)
-         ON CONFLICT (email) DO UPDATE SET status = EXCLUDED.status, role = EXCLUDED.role, lga_id = EXCLUDED.lga_id, ward_id = EXCLUDED.ward_id, polling_unit_id = EXCLUDED.polling_unit_id`,
+         ON CONFLICT (email) DO UPDATE SET password_hash = EXCLUDED.password_hash, status = EXCLUDED.status, role = EXCLUDED.role, lga_id = EXCLUDED.lga_id, ward_id = EXCLUDED.ward_id, polling_unit_id = EXCLUDED.polling_unit_id`,
         user,
       );
     }
