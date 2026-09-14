@@ -68,7 +68,7 @@ router.put('/elections/:electionId/candidates/:id', authenticate, authorize('sup
 router.delete('/elections/:electionId/candidates/:id', authenticate, authorize('super_admin'), auditLog('delete', 'candidate'), electionController.deleteCandidate);
 
 // ============ RESULT ROUTES ============
-router.post('/results', authenticate, authorize('pu_agent'), uploadResultImages, auditLog('submit', 'result'), resultsController.submitResult);
+router.post('/results', authenticate, authorize('pu_agent', 'ward_officer', 'lga_coordinator', 'state_coordinator', 'super_admin'), uploadResultImages, auditLog('submit', 'result'), resultsController.submitResult);
 router.get('/results', authenticate, resultsController.listResults);
 router.get('/results/:id', authenticate, resultsController.getResult);
 router.put('/results/:id/verify', authenticate, authorize('ward_officer', 'lga_coordinator', 'state_coordinator', 'super_admin'), auditLog('verify', 'result'), resultsController.verifyResult);
