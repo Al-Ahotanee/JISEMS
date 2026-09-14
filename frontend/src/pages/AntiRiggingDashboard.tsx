@@ -7,7 +7,8 @@ import JigawaMap from '../components/maps/JigawaMap';
 import PageHeader from '../components/common/PageHeader';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 import StatusBadge from '../components/common/StatusBadge';
-import { AlertTriangle, CheckCircle, ShieldAlert, FileSearch, RefreshCw } from 'lucide-react';
+import { AlertTriangle, CheckCircle, ShieldAlert, FileSearch, RefreshCw, Scale, Activity, Info } from 'lucide-react';
+import { ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend } from 'recharts';
 import toast from 'react-hot-toast';
 
 export default function AntiRiggingDashboard() {
@@ -32,6 +33,13 @@ export default function AntiRiggingDashboard() {
   });
 
   const anomalies: Anomaly[] = data?.data?.data || [];
+
+  const { data: benfordRes, isLoading: isBenfordLoading } = useQuery({
+    queryKey: ['benford-audit'],
+    queryFn: () => anomalyApi.getBenfordAudit(),
+    refetchInterval: 30000,
+  });
+  const benford = benfordRes?.data?.data;
 
   return (
     <motion.div
@@ -172,6 +180,87 @@ export default function AntiRiggingDashboard() {
           <div className="flex-1 glass-card p-2 min-h-[400px]">
             <JigawaMap anomalies={anomalies} onSelectAnomaly={setSelectedAnomaly} />
           </div>
+        </div>
+      </div>
+
+      {/* Digit Forensic Analysis: Benford's Law Audit */}
+      <div className="surface-elevated p-5 sm:p-6 border border-dark-border shadow-sm space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-dark-border">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-700 shrink-0">
+              <Scale className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <h3 className="font-display text-base font-bold text-text-primary">
+                  Digit Forensic Analysis (Benford's Law Audit)
+                </h3>
+                <span className={`text-[10px] px-2 py-0.5 rounded-md font-mono font-bold uppercase ${
+                  benford?.riskLevel === 'critical'
+                    ? 'bg-red-100 text-red-700 border border-red-200'
+                    : benford?.riskLevel === 'warning'
+                    ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                    : 'bg-emerald-100 text-emerald-800 border border-emerald-200'
+                }`}>
+                  {benford?.riskLevel === 'critical' ? 'High Divergence Alert' : benford?.riskLevel === 'warning' ? 'Moderate Deviation' : 'Natural Distribution'}
+                </span>
+              </div>
+              <p className="text-xs text-text-muted">
+                First-digit logarithmic distribution across all certified polling unit vote counts ({benford?.totalSamples || 0} sample tallies)
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 font-mono text-xs">
+            <span className="px-2.5 py-1 rounded-lg bg-dark-surface-2 border border-dark-border text-text-secondary">
+              Chi-Square (χ²): <strong className="text-primary-700">{benford?.chiSquare ?? '0.00'}</strong>
+            </span>
+            <span className="px-2.5 py-1 rounded-lg bg-dark-surface-2 border border-dark-border text-text-muted">
+              df: 8
+            </span>
+          </div>
+        </div>
+
+        {/* Forensic explanation banner */}
+        <div className="flex items-start gap-2.5 p-3 rounded-xl bg-primary-50/60 border border-primary-200/60 text-xs text-primary-900">
+          <Info className="w-4 h-4 text-primary-700 shrink-0 mt-0.5" />
+          <p className="leading-relaxed">
+            {benford?.riskMessage || 'Natural election outcomes strictly adhere to Benford\'s Law (1 ~30.1%, 2 ~17.6% ... 9 ~4.6%). Statistical spikes in high digits indicate vote fabrication or manual rounding.'}
+          </p>
+        </div>
+
+        {/* Composed Chart */}
+        <div className="h-64 sm:h-72 w-full pt-2">
+          {isBenfordLoading ? (
+            <div className="flex items-center justify-center h-full"><LoadingSpinner /></div>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <ComposedChart data={benford?.distribution || []} margin={{ top: 10, right: 20, bottom: 20, left: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" opacity={0.15} />
+                <XAxis dataKey="digit" tick={{ fill: '#64748b', fontSize: 12, fontWeight: 600 }} label={{ value: 'First Digit (1 - 9)', position: 'insideBottom', offset: -10, fill: '#64748b', fontSize: 11 }} />
+                <YAxis unit="%" tick={{ fill: '#64748b', fontSize: 11 }} domain={[0, 40]} />
+                <RechartsTooltip
+                  content={({ active, payload, label }) => {
+                    if (active && payload && payload.length) {
+                      const item = payload[0].payload;
+                      return (
+                        <div className="surface-elevated p-3 border border-dark-border rounded-xl shadow-lg text-xs font-mono">
+                          <p className="font-bold text-text-primary mb-1">Digit: {label}</p>
+                          <p className="text-emerald-700">Observed: {item.observedPercent}% ({item.observedCount} tallies)</p>
+                          <p className="text-amber-700">Benford Expected: {item.expectedPercent}%</p>
+                          <p className={item.diff > 0 ? 'text-blue-600' : 'text-purple-600'}>Divergence: {item.diff > 0 ? `+${item.diff}%` : `${item.diff}%`}</p>
+                        </div>
+                      );
+                    }
+                    return null;
+                  }}
+                />
+                <Legend wrapperStyle={{ fontSize: '11px', paddingTop: '10px' }} />
+                <Bar dataKey="observedPercent" name="Empirical PU Vote Counts (%)" fill="#15803d" radius={[6, 6, 0, 0]} barSize={28} />
+                <Line type="monotone" dataKey="expectedPercent" name="Benford Theoretical Curve (%)" stroke="#d97706" strokeWidth={3} dot={{ r: 4, fill: '#d97706' }} activeDot={{ r: 6 }} />
+              </ComposedChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </div>
     </motion.div>

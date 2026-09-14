@@ -155,19 +155,40 @@ const resolveDispute = async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const { resolution_notes, status } = req.body;
-    const finalStatus = status || 'resolved';
+    const validStatuses = ['open', 'security_alerted', 'investigating', 'resolved', 'dismissed', 'escalated'];
+    const finalStatus = status && validStatuses.includes(status) ? status : 'resolved';
 
     await pool.query(
-      'UPDATE disputes SET status = ?, resolution_notes = ?, resolved_by = ?, resolved_at = NOW() WHERE id = ?',
+      'UPDATE disputes SET status = ?, resolution_notes = ?, resolved_by = ?, resolved_at = NOW(), updated_at = NOW() WHERE id = ?',
       [finalStatus, resolution_notes || '', req.user.id, id]
+    );
+
+    const statusLabels = {
+      security_alerted: 'Security Forces & Rapid Response Alerted',
+      investigating: 'Electoral Investigation Dispatched',
+      resolved: 'Dispute Marked as Resolved',
+      dismissed: 'Dispute Reviewed and Dismissed',
+      escalated: 'Dispute Escalated to Higher Jurisdiction',
+    };
+    const logText = `[SLA Transition] Status updated to: ${statusLabels[finalStatus] || finalStatus}.${resolution_notes ? ` Notes: ${resolution_notes}` : ''}`;
+    await pool.query(
+      'INSERT INTO dispute_comments (dispute_id, user_id, comment) VALUES (?, ?, ?)',
+      [id, req.user.id, logText]
     );
 
     const [dispute] = await pool.query('SELECT raised_by, title FROM disputes WHERE id = ?', [id]);
     if (dispute.length) {
-      notificationService.notify(dispute[0].raised_by, 'Dispute Resolved', `Your dispute "${dispute[0].title}" has been ${finalStatus}`, 'dispute_resolved', 'dispute', id);
+      notificationService.notify(
+        dispute[0].raised_by,
+        `Dispute Status: ${finalStatus.toUpperCase()}`,
+        `Your dispute "${dispute[0].title}" is now: ${statusLabels[finalStatus] || finalStatus}`,
+        'dispute_update',
+        'dispute',
+        id
+      );
     }
 
-    return ApiResponse.success(res, null, `Dispute ${finalStatus}`);
+    return ApiResponse.success(res, { status: finalStatus }, `Dispute updated to ${finalStatus}`);
   } catch (error) {
     logger.error('Resolve dispute error:', error);
     return ApiResponse.error(res, 'Failed to resolve dispute');

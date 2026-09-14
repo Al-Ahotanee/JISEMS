@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { AlertTriangle, CheckCircle, ArrowUp, Send, Paperclip, User, Clock } from 'lucide-react';
+import { AlertTriangle, CheckCircle, ArrowUp, Send, Paperclip, User, Clock, ShieldAlert, Search, XCircle, CheckSquare } from 'lucide-react';
 import { disputeApi } from '../services/api';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
@@ -26,8 +26,12 @@ export default function DisputeDetailPage() {
   });
 
   const resolveMut = useMutation({
-    mutationFn: (notes: string) => disputeApi.resolveDispute(id!, { resolution_notes: notes, status: 'resolved' }),
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['dispute', id] }); toast.success('Dispute resolved'); }
+    mutationFn: ({ notes, status }: { notes: string; status?: string }) =>
+      disputeApi.resolveDispute(id!, { resolution_notes: notes, status: status || 'resolved' }),
+    onSuccess: (_, vars) => {
+      queryClient.invalidateQueries({ queryKey: ['dispute', id] });
+      toast.success(`Dispute status updated to ${vars.status || 'resolved'}`);
+    }
   });
 
   const escalateMut = useMutation({
@@ -48,11 +52,77 @@ export default function DisputeDetailPage() {
         <div className="flex items-center gap-2">
           <StatusBadge status={dispute.status} />
           {canResolve && dispute.status !== 'resolved' && dispute.status !== 'dismissed' && (
-            <div className="flex gap-2">
-              <button onClick={() => resolveMut.mutate('Resolved by reviewer')} className="btn-primary py-1.5 px-3 text-sm flex items-center gap-1"><CheckCircle className="w-4 h-4" /> Resolve</button>
-              <button onClick={() => escalateMut.mutate()} className="btn-outline py-1.5 px-3 text-sm flex items-center gap-1"><ArrowUp className="w-4 h-4" /> Escalate</button>
+            <div className="flex flex-wrap gap-2">
+              {dispute.status !== 'security_alerted' && (
+                <button
+                  onClick={() => resolveMut.mutate({ notes: 'Rapid Security Response Alerted and Dispatched', status: 'security_alerted' })}
+                  className="px-3 py-1.5 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                  title="Trigger Security Escalation & Alert Field Units"
+                >
+                  <ShieldAlert className="w-3.5 h-3.5 text-red-400" />
+                  <span>Alert Security</span>
+                </button>
+              )}
+              {dispute.status !== 'investigating' && (
+                <button
+                  onClick={() => resolveMut.mutate({ notes: 'Electoral Investigation Unit Assigned', status: 'investigating' })}
+                  className="px-3 py-1.5 rounded-xl bg-yellow-500/10 border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/20 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+                  title="Dispatch Investigation Team"
+                >
+                  <Search className="w-3.5 h-3.5 text-yellow-400" />
+                  <span>Dispatch Investigation</span>
+                </button>
+              )}
+              <button
+                onClick={() => resolveMut.mutate({ notes: 'Dispute thoroughly investigated and officially resolved', status: 'resolved' })}
+                className="btn-primary py-1.5 px-3 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              >
+                <CheckCircle className="w-3.5 h-3.5" />
+                <span>Resolve</span>
+              </button>
+              <button
+                onClick={() => resolveMut.mutate({ notes: 'Reviewed and dismissed as unfounded / resolved at PU', status: 'dismissed' })}
+                className="px-3 py-1.5 rounded-xl bg-dark-surface-2 border border-dark-border text-text-muted hover:text-text-primary text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer"
+              >
+                <XCircle className="w-3.5 h-3.5" />
+                <span>Dismiss</span>
+              </button>
+              <button
+                onClick={() => escalateMut.mutate()}
+                className="btn-outline py-1.5 px-3 text-xs font-bold flex items-center gap-1.5 cursor-pointer"
+              >
+                <ArrowUp className="w-3.5 h-3.5" />
+                <span>Escalate</span>
+              </button>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* SLA Workflow Status Pipeline */}
+      <div className="glass-card p-5">
+        <h4 className="text-xs font-mono font-bold uppercase tracking-wider text-text-muted mb-3 flex items-center gap-2">
+          <Clock className="w-3.5 h-3.5 text-primary-500" />
+          Rapid Incident SLA Tracking Workflow
+        </h4>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+          {[
+            { key: 'open', label: '1. Incident Logged', active: true },
+            { key: 'security_alerted', label: '2. Security Alerted', active: ['security_alerted', 'investigating', 'resolved', 'dismissed'].includes(dispute.status) },
+            { key: 'investigating', label: '3. Investigation Dispatched', active: ['investigating', 'resolved', 'dismissed'].includes(dispute.status) },
+            { key: 'resolved', label: '4. Resolution & Sign-off', active: ['resolved', 'dismissed'].includes(dispute.status) },
+          ].map(step => (
+            <div
+              key={step.key}
+              className={`p-3 rounded-xl border text-center transition-all ${
+                step.active
+                  ? 'bg-primary-500/10 border-primary-500/40 text-primary-300 font-bold'
+                  : 'bg-dark-surface-2/40 border-dark-border/40 text-text-muted opacity-50'
+              }`}
+            >
+              <div className="text-[11px] font-mono">{step.label}</div>
+            </div>
+          ))}
         </div>
       </div>
 

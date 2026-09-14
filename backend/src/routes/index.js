@@ -94,6 +94,7 @@ router.get('/public/situation-room', publicController.getSituationRoom);
 router.get('/public/situation-room/lga/:id', publicController.getSituationRoomLGA);
 router.get('/public/situation-room/ward/:id', publicController.getSituationRoomWard);
 router.get('/public/embed/:electionId', publicController.getEmbedData);
+router.get('/public/merkle-ledger', publicController.getMerkleLedger);
 
 // ============ DISPUTE ROUTES ============
 router.post('/disputes', authenticate, auditLog('create', 'dispute'), disputesController.raiseDispute);

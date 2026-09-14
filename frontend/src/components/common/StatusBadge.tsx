@@ -27,6 +27,7 @@ const statusColorMap: Record<string, ColorScheme> = {
   investigating: { bg: 'bg-yellow-500/15', text: 'text-yellow-400', dot: 'bg-yellow-400' },
 
   // Red
+  security_alerted: { bg: 'bg-red-500/20', text: 'text-red-400 font-bold', dot: 'bg-red-400 animate-pulse' },
   rejected: { bg: 'bg-red-500/15', text: 'text-red-400', dot: 'bg-red-400' },
   inactive: { bg: 'bg-red-500/15', text: 'text-red-400', dot: 'bg-red-400' },
   cancelled: { bg: 'bg-red-500/15', text: 'text-red-400', dot: 'bg-red-400' },
@@ -53,10 +54,10 @@ const defaultColor: ColorScheme = {
 };
 
 function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
-  const normalised = status.toLowerCase().trim();
+  const normalised = (status || '').toLowerCase().trim();
   const colors = statusColorMap[normalised] ?? defaultColor;
 
-  const displayLabel = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  const displayLabel = normalised.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) || 'Unknown';
 
   return (
     <span

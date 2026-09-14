@@ -2,6 +2,7 @@ const { pool, cache } = require('../config/database');
 const ApiResponse = require('../utils/response');
 const logger = require('../utils/logger');
 const JIGAWA_GEO = require('../data/jigawa-geo');
+const { buildMerkleTree, sha256 } = require('../utils/merkle');
 
 function getConstituencyLgas(election) {
   if (!election || election.constituency_type === 'statewide') return null;
@@ -594,4 +595,57 @@ const getEmbedData = async (req, res) => {
   }
 };
 
-module.exports = { getSituationRoom, getSituationRoomLGA, getSituationRoomWard, getEmbedData };
+const getMerkleLedger = async (req, res) => {
+  try {
+    const { election_id } = req.query;
+    let targetElectionId = election_id ? parseInt(election_id) : null;
+
+    if (!targetElectionId) {
+      const [elections] = await pool.query(
+        "SELECT id FROM elections WHERE status = 'ongoing' ORDER BY id ASC LIMIT 1"
+      );
+      if (elections.length) {
+        targetElectionId = elections[0].id;
+      } else {
+        const [latest] = await pool.query(
+          "SELECT id FROM elections ORDER BY election_date DESC LIMIT 1"
+        );
+        if (latest.length) targetElectionId = latest[0].id;
+      }
+    }
+
+    if (!targetElectionId) {
+      return ApiResponse.notFound(res, 'No election found for Merkle ledger');
+    }
+
+    const [submissions] = await pool.query(
+      `SELECT id, submission_uid, content_hash, digital_signature, status, created_at
+       FROM result_submissions
+       WHERE election_id = ? AND status = 'verified'
+       ORDER BY created_at ASC`,
+      [targetElectionId]
+    );
+
+    const leaves = submissions.map(s => s.digital_signature || s.content_hash || sha256(s.submission_uid));
+    const tree = buildMerkleTree(leaves);
+
+    return ApiResponse.success(res, {
+      election_id: targetElectionId,
+      total_verified_submissions: submissions.length,
+      merkle_root: tree.root,
+      tree_height: tree.treeHeight,
+      last_block_timestamp: submissions.length ? submissions[submissions.length - 1].created_at : new Date().toISOString(),
+      recent_hashes: submissions.slice(-10).map(s => ({
+        submission_uid: s.submission_uid,
+        hash: s.digital_signature || s.content_hash,
+        timestamp: s.created_at,
+      })),
+    }, 'Merkle audit ledger generated');
+  } catch (error) {
+    logger.error('Merkle ledger error:', error);
+    return ApiResponse.error(res, 'Failed to generate Merkle ledger');
+  }
+};
+
+module.exports = { getSituationRoom, getSituationRoomLGA, getSituationRoomWard, getEmbedData, getMerkleLedger };
+

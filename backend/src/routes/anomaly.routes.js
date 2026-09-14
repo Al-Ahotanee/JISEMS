@@ -10,6 +10,7 @@ router.use(authenticate);
 router.use(authorize('super_admin', 'state_coordinator'));
 
 router.get('/', anomalyController.listAnomalies);
+router.get('/benford', anomalyController.getBenfordAudit);
 router.patch('/:id/resolve', anomalyController.resolveAnomaly);
 
 module.exports = router;

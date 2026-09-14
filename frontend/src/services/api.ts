@@ -215,6 +215,15 @@ export const publicApi = {
   getSituationRoomWard(wardId: number, params?: ApiParams) { return api.get(`/public/situation-room/ward/${wardId}`, { params }); },
   getEmbedData(electionId: number) { return api.get(`/public/embed/${electionId}`); },
   getPublicElections() { return api.get('/public/elections'); },
+  getMerkleLedger(params?: ApiParams) { return api.get('/public/merkle-ledger', { params }); },
+};
+
+// ==================== ANOMALY API ====================
+
+export const anomalyApi = {
+  listAnomalies(params?: ApiParams) { return api.get('/anomalies', { params }); },
+  resolveAnomaly(id: number, status: string) { return api.patch(`/anomalies/${id}/resolve`, { status }); },
+  getBenfordAudit(params?: ApiParams) { return api.get('/anomalies/benford', { params }); },
 };
 
 // ==================== DISPUTE API ====================
@@ -289,11 +298,5 @@ export const privacyApi = {
   requestErasure() { return api.post('/privacy/erasure'); },
 };
 
-// ==================== ANOMALY API ====================
-
-export const anomalyApi = {
-  listAnomalies(params?: ApiParams) { return api.get('/anomalies', { params }); },
-  resolveAnomaly(id: number, status: 'resolved' | 'dismissed') { return api.patch(`/anomalies/${id}/resolve`, { status }); },
-};
-
 export default api;
+

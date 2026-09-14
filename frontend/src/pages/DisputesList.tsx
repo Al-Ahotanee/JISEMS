@@ -22,7 +22,7 @@ export default function DisputesListPage() {
       <div className="flex items-center justify-between"><PageHeader title="Disputes" subtitle="Manage election disputes" /><Link to="/disputes/new" className="btn-accent flex items-center gap-2"><Plus className="w-4 h-4" /> New Dispute</Link></div>
       <div className="glass-card p-4 flex gap-3 items-center">
         <select value={status} onChange={e => { setStatus(e.target.value); setPage(1); }} className="input-field py-2 text-sm w-40">
-          <option value="">All Status</option><option value="open">Open</option><option value="investigating">Investigating</option><option value="escalated">Escalated</option><option value="resolved">Resolved</option><option value="dismissed">Dismissed</option>
+          <option value="">All Status</option><option value="open">Open</option><option value="security_alerted">Security Alerted</option><option value="investigating">Investigating</option><option value="escalated">Escalated</option><option value="resolved">Resolved</option><option value="dismissed">Dismissed</option>
         </select>
       </div>
       {isLoading ? <LoadingSpinner /> : (

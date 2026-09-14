@@ -55,11 +55,83 @@ export default function SubmitResultPage() {
     }
   };
 
-  // Dropzone
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    const newImages = [...images, ...acceptedFiles].slice(0, 5);
+async function watermarkImageFile(
+  file: File,
+  puInfo?: { name?: string; inec_pu_code?: string },
+  gpsCoords?: { lat: number; lng: number } | null,
+  userId?: number | string
+): Promise<File> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        resolve(file);
+        return;
+      }
+
+      ctx.drawImage(img, 0, 0);
+
+      const bannerHeight = Math.max(70, Math.floor(img.height * 0.08));
+      const fontSize = Math.max(14, Math.floor(bannerHeight * 0.28));
+
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+      ctx.fillRect(0, img.height - bannerHeight, img.width, bannerHeight);
+
+      ctx.fillStyle = '#15803d';
+      ctx.fillRect(0, img.height - bannerHeight, img.width, Math.max(4, Math.floor(bannerHeight * 0.06)));
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold ${fontSize}px sans-serif`;
+      ctx.fillText(
+        `JISEMS VERIFIED SUBMISSION • ${puInfo?.inec_pu_code || 'PU'} — ${puInfo?.name || 'Polling Unit'}`,
+        20,
+        img.height - bannerHeight + fontSize + 8
+      );
+
+      ctx.font = `${Math.floor(fontSize * 0.85)}px monospace`;
+      ctx.fillStyle = '#94a3b8';
+      const gpsStr = gpsCoords ? `GPS: ${gpsCoords.lat.toFixed(5)}, ${gpsCoords.lng.toFixed(5)}` : 'GPS: PENDING';
+      const timeStr = `${new Date().toLocaleDateString('en-GB')} ${new Date().toLocaleTimeString('en-GB')} WAT`;
+      ctx.fillText(
+        `${timeStr} | ${gpsStr} | Agent #${userId || 'N/A'}`,
+        20,
+        img.height - 12
+      );
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            resolve(file);
+            return;
+          }
+          const watermarked = new File([blob], file.name, { type: 'image/jpeg' });
+          resolve(watermarked);
+        },
+        'image/jpeg',
+        0.92
+      );
+    };
+    img.onerror = () => resolve(file);
+    img.src = url;
+  });
+}
+
+  // Dropzone with auto watermark
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    toast.loading('Applying forensic watermark...', { id: 'watermark' });
+    const processed = await Promise.all(
+      acceptedFiles.map(file => watermarkImageFile(file, pu, gps, user?.id))
+    );
+    toast.success('Forensic watermark applied', { id: 'watermark' });
+    const newImages = [...images, ...processed].slice(0, 5);
     setImages(newImages);
-  }, [images]);
+  }, [images, pu, gps, user]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop, accept: { 'image/*': ['.jpeg', '.jpg', '.png', '.webp'] }, maxSize: 10485760, maxFiles: 5 - images.length
@@ -239,12 +311,36 @@ export default function SubmitResultPage() {
                 <input type="number" min="0" value={rejected || ''} onChange={e => setRejected(parseInt(e.target.value) || 0)} className="input-field font-mono" />
               </div>
             </div>
-            <div className="rounded-xl border border-primary-100 bg-primary-50/60 p-3 space-y-1">
-              <div className="flex justify-between text-sm"><span className="text-text-muted">Total Valid Votes:</span><span className="font-mono text-primary-700">{totalValidVotes}</span></div>
-              <div className="flex justify-between text-sm"><span className="text-text-muted">Total Votes Cast:</span><span className="font-mono text-text-primary font-bold">{totalVotesCast}</span></div>
+            <div className="rounded-xl border border-primary-100 bg-primary-50/60 p-4 space-y-2">
+              <div className="flex justify-between text-sm"><span className="text-text-muted">Total Valid Votes:</span><span className="font-mono text-primary-700 font-bold">{totalValidVotes}</span></div>
+              <div className="flex justify-between text-sm"><span className="text-text-muted">Rejected Votes:</span><span className="font-mono text-text-muted font-bold">{rejected}</span></div>
+              <div className="flex justify-between text-sm pt-1 border-t border-primary-200/50"><span className="text-text-primary font-semibold">Total Votes Cast:</span><span className="font-mono text-text-primary font-bold">{totalVotesCast}</span></div>
             </div>
-            {totalVotesCast > accredited && accredited > 0 && (
-              <div className="flex items-center gap-2 text-red-400 text-sm"><AlertTriangle className="w-4 h-4" /> Votes exceed accredited voters!</div>
+
+            {/* Arithmetic Auto-Balance Assistant */}
+            {totalVotesCast > 0 && (
+              <div className="space-y-2">
+                {totalVotesCast <= accredited && accredited > 0 && (!pu?.registered_voters || accredited <= pu.registered_voters) ? (
+                  <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2">
+                    <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span><strong>Tally Balanced:</strong> {totalValidVotes} valid + {rejected} rejected = {totalVotesCast} cast ({accredited > 0 ? ((totalVotesCast / accredited) * 100).toFixed(1) : 0}% turnout of accredited).</span>
+                  </div>
+                ) : null}
+
+                {totalVotesCast > accredited && accredited > 0 && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                    <span><strong>Arithmetic Discrepancy (Over-Voting):</strong> Total votes cast ({totalVotesCast}) exceeds accredited voters ({accredited}) by {totalVotesCast - accredited} votes!</span>
+                  </div>
+                )}
+
+                {pu?.registered_voters && accredited > pu.registered_voters && (
+                  <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
+                    <AlertTriangle className="w-4 h-4 text-red-600 shrink-0" />
+                    <span><strong>Voter Roll Discrepancy:</strong> Accredited voters ({accredited}) exceeds registered voters ({pu.registered_voters}) for this PU!</span>
+                  </div>
+                )}
+              </div>
             )}
             <div>
               <label className="label-text">PIN (Digital Signature)</label>
