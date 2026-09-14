@@ -5,6 +5,7 @@ const ApiResponse = require('../utils/response');
 const logger = require('../utils/logger');
 const { broadcastResultSubmission, broadcastResultVerified } = require('../websocket/socket.handler');
 const notificationService = require('../services/notification.service');
+const storageService = require('../services/storage.service');
 
 const HMAC_SECRET = process.env.HMAC_SECRET || (process.env.NODE_ENV === 'production' ? null : 'jisems-development-only-hmac-secret');
 if (!HMAC_SECRET) throw new Error('HMAC_SECRET is required in production');
@@ -201,14 +202,14 @@ async function submitResult(req, res) {
       }
     }
 
-    // Insert result_sheet_images for each uploaded file
+    // Insert result_sheet_images for each uploaded file (with Cloudinary / local storage)
     if (req.files && req.files.length > 0) {
       for (const file of req.files) {
-        const imageUrl = `/uploads/results/${file.filename}`;
+        const uploaded = await storageService.uploadFile(file, 'results');
         await connection.query(
           `INSERT INTO result_sheet_images (submission_id, image_url, image_type, file_size, created_at)
            VALUES (?, ?, 'ec8a_front', ?, NOW())`,
-          [submissionId, imageUrl, file.size]
+          [submissionId, uploaded.url, uploaded.size || file.size]
         );
       }
     }

@@ -2,6 +2,7 @@ const { pool } = require('../config/database');
 const bcrypt = require('bcryptjs');
 const ApiResponse = require('../utils/response');
 const logger = require('../utils/logger');
+const storageService = require('../services/storage.service');
 
 const updateProfile = async (req, res) => {
   try {
@@ -33,9 +34,9 @@ const updateProfile = async (req, res) => {
 const uploadPhoto = async (req, res) => {
   try {
     if (!req.file) return ApiResponse.badRequest(res, 'No photo uploaded');
-    const photoUrl = `/uploads/profiles/${req.file.filename}`;
-    await pool.query('UPDATE users SET photo_url = ? WHERE id = ?', [photoUrl, req.user.id]);
-    return ApiResponse.success(res, { photo_url: photoUrl }, 'Photo uploaded');
+    const uploaded = await storageService.uploadFile(req.file, 'profiles');
+    await pool.query('UPDATE users SET photo_url = ? WHERE id = ?', [uploaded.url, req.user.id]);
+    return ApiResponse.success(res, { photo_url: uploaded.url }, 'Photo uploaded');
   } catch (error) {
     logger.error('Upload photo error:', error);
     return ApiResponse.error(res, 'Failed to upload photo');

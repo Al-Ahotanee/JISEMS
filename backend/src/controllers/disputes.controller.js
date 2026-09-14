@@ -2,6 +2,7 @@ const { pool } = require('../config/database');
 const ApiResponse = require('../utils/response');
 const logger = require('../utils/logger');
 const notificationService = require('../services/notification.service');
+const storageService = require('../services/storage.service');
 
 const raiseDispute = async (req, res) => {
   try {
@@ -139,9 +140,10 @@ const addEvidence = async (req, res) => {
     if (!req.files || !req.files.length) return ApiResponse.badRequest(res, 'No files uploaded');
 
     for (const file of req.files) {
+      const uploaded = await storageService.uploadFile(file, 'evidence');
       await pool.query(
         'INSERT INTO dispute_evidence (dispute_id, uploaded_by, file_url, file_type, description) VALUES (?, ?, ?, ?, ?)',
-        [disputeId, req.user.id, `/uploads/evidence/${file.filename}`, file.mimetype, req.body.description || '']
+        [disputeId, req.user.id, uploaded.url, file.mimetype, req.body.description || '']
       );
     }
     return ApiResponse.created(res, null, 'Evidence uploaded');
