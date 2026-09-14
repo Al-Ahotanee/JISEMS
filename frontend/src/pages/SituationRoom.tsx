@@ -1266,9 +1266,9 @@ export default function SituationRoomPage() {
                   </div>
 
                   {/* Dual Chart Section */}
-                  <div className="grid md:grid-cols-2 gap-6 h-[300px]">
+                  <div className="grid md:grid-cols-2 gap-6 min-h-[280px] md:h-[300px]">
                     {/* Vote Distribution Pie Chart */}
-                    <div className="surface-elevated p-5 flex flex-col relative">
+                    <div className="surface-elevated p-5 flex flex-col relative min-h-[260px] md:min-h-0">
                       <h3 className="font-display text-sm font-semibold text-text-secondary mb-2 flex items-center gap-2">
                         <PieChartIcon className="w-4 h-4 text-primary-600" /> Vote Share Distribution
                       </h3>

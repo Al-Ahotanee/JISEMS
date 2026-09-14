@@ -141,22 +141,27 @@ function TopBar() {
 
           {/* Online / Offline pill */}
           <div
-            className={`hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border shadow-sm ${
+            className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs font-semibold border shadow-sm ${
               isOnline
                 ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
                 : 'bg-red-50 text-status-error border-red-200'
             }`}
+            title={isOnline ? 'System Online (Live Sync Active)' : 'System Offline (Local IndexedDB Storage Active)'}
           >
-            {isOnline ? <Wifi className="w-3 h-3 text-emerald-600" /> : <WifiOff className="w-3 h-3" />}
+            {isOnline ? <Wifi className="w-3.5 h-3.5 text-emerald-600" /> : <WifiOff className="w-3.5 h-3.5 text-red-600" />}
             {isOnline && <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />}
-            {isOnline ? 'Online' : 'Offline'}
+            <span className="hidden sm:inline">{isOnline ? 'Online' : 'Offline'}</span>
           </div>
 
           {/* Pending Sync Badge */}
           {pendingSyncCount > 0 && (
-            <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-accent-500/10 text-accent-500 border border-accent-500/20">
-              <CloudOff className="w-3 h-3 animate-pulse" />
-              {pendingSyncCount} Pending
+            <div
+              className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-800 border border-amber-300 shadow-sm"
+              title={`${pendingSyncCount} offline result(s) queued for synchronization`}
+            >
+              <CloudOff className="w-3.5 h-3.5 text-amber-600 animate-pulse" />
+              <span className="font-mono font-bold">{pendingSyncCount}</span>
+              <span className="hidden sm:inline">Pending</span>
             </div>
           )}
 

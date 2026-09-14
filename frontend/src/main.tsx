@@ -7,6 +7,17 @@ import { Toaster } from 'react-hot-toast';
 import App from './App';
 import { store } from './store';
 import './index.css';
+import { registerSW } from 'virtual:pwa-register';
+
+// Register Service Worker for PWA offline capability & background caching
+if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+  registerSW({
+    immediate: true,
+    onOfflineReady() {
+      console.log('[JISEMS PWA] Ready for offline field operations in Jigawa State.');
+    },
+  });
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {

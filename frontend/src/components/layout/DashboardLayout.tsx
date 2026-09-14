@@ -6,6 +6,8 @@ import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 import OfflineSyncManager from '../common/OfflineSyncManager';
 import OfflineIncidentModal from '../common/OfflineIncidentModal';
+import MobileBottomNav from './MobileBottomNav';
+import PWAInstallBanner from '../common/PWAInstallBanner';
 import { AlertTriangle } from 'lucide-react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -29,6 +31,7 @@ function DashboardLayout() {
   return (
     <div className="min-h-screen bg-dark-bg atlas-grid">
       <OfflineSyncManager />
+      <PWAInstallBanner />
       {/* Sidebar */}
       <Sidebar />
 
@@ -37,8 +40,8 @@ function DashboardLayout() {
         {/* Top bar */}
         <TopBar />
 
-        {/* Page content */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10">
+        {/* Page content with bottom padding on mobile for MobileBottomNav */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 xl:p-10 pb-24 lg:pb-10">
           <AnimatePresence mode="wait">
             <motion.div
               key={location.pathname}
@@ -53,13 +56,16 @@ function DashboardLayout() {
         </main>
       </div>
 
-      {/* Floating SOS Incident Button */}
+      {/* Mobile Bottom Navigation Bar */}
+      <MobileBottomNav />
+
+      {/* Floating SOS Incident Button (positioned above bottom nav on mobile) */}
       <button
         onClick={() => setIsIncidentModalOpen(true)}
-        className="fixed bottom-6 right-6 z-40 bg-status-error hover:bg-red-700 text-white p-4 rounded-2xl shadow-lg shadow-red-900/20 flex items-center justify-center transition-transform duration-200 hover:-translate-y-1 active:scale-95 group no-print"
+        className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 bg-status-error hover:bg-red-700 text-white p-3.5 sm:p-4 rounded-2xl shadow-lg shadow-red-900/30 flex items-center justify-center transition-transform duration-200 hover:-translate-y-1 active:scale-95 group no-print"
         aria-label="Report Incident"
       >
-        <AlertTriangle className="w-6 h-6 animate-pulse group-hover:animate-none" />
+        <AlertTriangle className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse group-hover:animate-none" />
       </button>
 
       <OfflineIncidentModal 

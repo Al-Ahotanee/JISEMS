@@ -27,6 +27,10 @@ export default function SubmitResultPage() {
   const [pin, setPin] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [cachedElection, setCachedElection] = useState<Election | null>(null);
+  const [cachedPu, setCachedPu] = useState<any>(null);
+  const [cachedCandidates, setCachedCandidates] = useState<Candidate[]>([]);
+
   const { data: electionData } = useQuery({ queryKey: ['elections'], queryFn: () => electionApi.listElections() });
   const election = electionData?.data?.data?.find((e: Election) => e.status === 'ongoing');
 
@@ -36,14 +40,57 @@ export default function SubmitResultPage() {
     enabled: !!user?.polling_unit_id,
   });
 
+  const activeElectionId = election?.id || cachedElection?.id;
   const { data: candidateData } = useQuery({
-    queryKey: ['candidates', election?.id],
-    queryFn: () => electionApi.listCandidates(election!.id),
-    enabled: !!election?.id,
+    queryKey: ['candidates', activeElectionId],
+    queryFn: () => electionApi.listCandidates(activeElectionId!),
+    enabled: !!activeElectionId,
   });
 
-  const pu = puData?.data?.data;
-  const candidates = candidateData?.data?.data || [];
+  // Automatically save election & PU data into IndexedDB cache when loaded
+  useEffect(() => {
+    if (election) {
+      offlineDb.setCachedData('active_election', election);
+    }
+  }, [election]);
+
+  useEffect(() => {
+    if (puData?.data?.data && user?.polling_unit_id) {
+      offlineDb.setCachedData(`pu_${user.polling_unit_id}`, puData.data.data);
+    }
+  }, [puData, user?.polling_unit_id]);
+
+  useEffect(() => {
+    if (candidateData?.data?.data && candidateData.data.data.length > 0 && activeElectionId) {
+      offlineDb.setCachedData(`candidates_${activeElectionId}`, candidateData.data.data);
+    }
+  }, [candidateData, activeElectionId]);
+
+  // Load from IndexedDB offline store if queries are offline/unavailable
+  useEffect(() => {
+    if (!election) {
+      offlineDb.getCachedData<Election>('active_election').then(res => {
+        if (res) setCachedElection(res);
+      });
+    }
+    if (user?.polling_unit_id && !puData?.data?.data) {
+      offlineDb.getCachedData<any>(`pu_${user.polling_unit_id}`).then(res => {
+        if (res) setCachedPu(res);
+      });
+    }
+    if (activeElectionId && (!candidateData?.data?.data || candidateData.data.data.length === 0)) {
+      offlineDb.getCachedData<Candidate[]>(`candidates_${activeElectionId}`).then(res => {
+        if (res && res.length > 0) setCachedCandidates(res);
+      });
+    }
+  }, [election, puData, candidateData, user?.polling_unit_id, activeElectionId]);
+
+  const activeElection = election || cachedElection;
+  const pu = puData?.data?.data || cachedPu;
+  const candidates = (candidateData?.data?.data && candidateData.data.data.length > 0)
+    ? candidateData.data.data
+    : cachedCandidates;
+
 
   // GPS capture
   const captureGPS = () => {
@@ -141,7 +188,7 @@ async function watermarkImageFile(
   const totalVotesCast = totalValidVotes + rejected;
 
   const handleSubmit = async () => {
-    if (!election || !pu) return;
+    if (!activeElection || !pu) return;
     setIsSubmitting(true);
 
     const voteEntries = candidates.map((c: Candidate) => ({ candidate_id: c.id, votes: votes[c.id] || 0 }));
@@ -153,7 +200,7 @@ async function watermarkImageFile(
           return new Blob([arrayBuffer], { type: img.type });
         }));
         await offlineDb.offlineResults.add({
-          election_id: election.id, polling_unit_id: pu.id,
+          election_id: activeElection.id, polling_unit_id: pu.id,
           accredited_voters: accredited, rejected_votes: rejected,
           registered_voters: pu.registered_voters || 0,
           total_votes_cast: totalVotesCast,
@@ -173,7 +220,7 @@ async function watermarkImageFile(
 
     try {
       const formData = new FormData();
-      formData.append('election_id', String(election.id));
+      formData.append('election_id', String(activeElection.id));
       formData.append('polling_unit_id', String(pu.id));
       formData.append('accredited_voters', String(accredited));
       formData.append('registered_voters', String(pu.registered_voters || 0));
@@ -228,9 +275,9 @@ async function watermarkImageFile(
         {currentStep === 0 && (
           <div className="text-center space-y-4">
             <FileText className="w-12 h-12 text-primary-600 mx-auto" />
-            <h2 className="font-display text-xl font-bold text-text-primary">{election?.title || 'No active election'}</h2>
-            <p className="text-text-muted">Election Date: {election?.election_date}</p>
-            {election && <button onClick={() => setCurrentStep(1)} className="btn-primary">Confirm & Continue</button>}
+            <h2 className="font-display text-xl font-bold text-text-primary">{activeElection?.title || 'No active election'}</h2>
+            <p className="text-text-muted">Election Date: {activeElection?.election_date}</p>
+            {activeElection && <button onClick={() => setCurrentStep(1)} className="btn-primary">Confirm & Continue</button>}
           </div>
         )}
 
@@ -358,7 +405,7 @@ async function watermarkImageFile(
           <div className="space-y-4">
             <h2 className="font-display text-lg font-semibold text-text-primary flex items-center gap-2"><CheckCircle className="w-5 h-5 text-accent-700" /> Review & Submit</h2>
             <div className="rounded-2xl border border-primary-100 bg-primary-50/50 p-4 space-y-3">
-              <p className="text-sm"><span className="text-text-muted">Election:</span> <span className="text-text-primary">{election?.title}</span></p>
+              <p className="text-sm"><span className="text-text-muted">Election:</span> <span className="text-text-primary">{activeElection?.title}</span></p>
               <p className="text-sm"><span className="text-text-muted">Polling Unit:</span> <span className="text-text-primary">{pu?.name} ({pu?.inec_pu_code})</span></p>
               <p className="text-sm"><span className="text-text-muted">Photos:</span> <span className="text-primary-700 font-semibold">{images.length} uploaded</span></p>
               {gps && <p className="text-sm"><span className="text-text-muted">GPS:</span> <span className="font-mono text-xs">{gps.lat.toFixed(6)}, {gps.lng.toFixed(6)}</span></p>}
